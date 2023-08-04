@@ -82,9 +82,9 @@ public class UserRepositoryMemory implements UserRepository {
     }
 
     @Override
-    public boolean deleteUserById(long id) {
-        users.remove(id);
-        return users.containsKey(id);
+    public boolean deleteUserById(long userId) {
+        users.remove(userId);
+        return users.containsKey(userId);
     }
 
     private void checkUserExist(long id) throws NotFoundException {
