@@ -19,8 +19,22 @@ public class UserMapper {
         name = user.getName();
         email = user.getEmail();
 
-        UserDto userDto = new UserDto(id, name, email);
+        return new UserDto(id, name, email);
+    }
 
-        return userDto;
+    public User convertUserDtoToUser(UserDto userDto) {
+        if (userDto == null) {
+            return null;
+        }
+
+        long id = 0L;
+        String name = null;
+        String email = null;
+
+        id = userDto.getId();
+        name = userDto.getName();
+        email = userDto.getEmail();
+
+        return new User(id, name, email);
     }
 }

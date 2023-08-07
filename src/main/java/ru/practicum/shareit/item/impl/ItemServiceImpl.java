@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import ru.practicum.shareit.item.ItemRepository;
 import ru.practicum.shareit.item.ItemService;
 import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.UserRepository;
 
 import java.util.ArrayList;
@@ -20,16 +19,16 @@ public class ItemServiceImpl implements ItemService {
     private final UserRepository userRepository;
 
     @Override
-    public ItemDto createItem(long userId, Item item) {
+    public ItemDto createItem(long userId, ItemDto itemDto) {
         userRepository.getUserById(userId);
-        item.setUserId(userId);
-        return itemRepository.createItem(item);
+        itemDto.setUserId(userId);
+        return itemRepository.createItem(itemDto);
     }
 
     @Override
-    public ItemDto updateItem(long userId, long itemId, Item item) {
+    public ItemDto updateItem(long userId, long itemId, ItemDto itemDto) {
         userRepository.getUserById(userId);
-        return itemRepository.updateItem(userId, itemId, item);
+        return itemRepository.updateItem(userId, itemId, itemDto);
     }
 
     @Override

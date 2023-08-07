@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Repository
 @Slf4j
-
 public class UserRepositoryMemory implements UserRepository {
 
     private final Map<Long, User> users = new HashMap<>();
@@ -32,10 +31,13 @@ public class UserRepositoryMemory implements UserRepository {
     }
 
     @Override
-    public UserDto createUser(User user) {
+    public UserDto createUser(UserDto userDto) {
+
+        User user = mapper.convertUserDtoToUser(userDto);
+
       if (!users.containsValue(user)) {
           users.put(assignId(user), user);
-          emails.add(user.getEmail());
+          emails.add(userDto.getEmail());
           return mapper.convertUserToUserDto(user);
       }
       log.info("Пользователь {} уже существует", user);
@@ -43,18 +45,18 @@ public class UserRepositoryMemory implements UserRepository {
     }
 
     @Override
-    public UserDto updateUser(long id, User user) {
+    public UserDto updateUser(long id, UserDto userDto) {
        checkUserExist(id);
        User storedUser = users.get(id);
-       storedUser.setName(Objects.nonNull(user.getName()) ? user.getName() : storedUser.getName());
+       storedUser.setName(Objects.nonNull(userDto.getName()) ? userDto.getName() : storedUser.getName());
 
-       if (Objects.nonNull(user.getEmail())) {
-       updateUserEmail(user, storedUser);
+       if (Objects.nonNull(userDto.getEmail())) {
+       updateUserEmail(userDto, storedUser);
        }
        return mapper.convertUserToUserDto(storedUser);
     }
 
-    private void updateUserEmail(User user, User storedUser) {
+    private void updateUserEmail(UserDto user, User storedUser) {
 
         if (!user.getEmail().equals(storedUser.getEmail())) {
             if (emails.contains(user.getEmail())) {
@@ -77,14 +79,17 @@ public class UserRepositoryMemory implements UserRepository {
     @Override
     public List<UserDto> getAllUsers() {
         return users.values().stream()
-                .map(user -> mapper.convertUserToUserDto(user))
+                .map(mapper::convertUserToUserDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public boolean deleteUserById(long userId) {
+        if (!users.containsKey(userId)) {
+            return false;
+        }
         users.remove(userId);
-        return users.containsKey(userId);
+        return true;
     }
 
     private void checkUserExist(long id) throws NotFoundException {

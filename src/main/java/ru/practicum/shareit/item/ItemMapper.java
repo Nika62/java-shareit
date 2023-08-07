@@ -16,10 +16,25 @@ public class ItemMapper {
         itemDto.setId(item.getId());
         itemDto.setName(item.getName());
         itemDto.setDescription(item.getDescription());
-        if (item.getAvailable() != null) {
-            itemDto.setAvailable(item.getAvailable());
-        }
+        itemDto.setAvailable(item.isAvailable());
 
         return itemDto;
     }
+
+    public Item convertItemDtoToItem(ItemDto itemDto) {
+        if (itemDto == null) {
+            return null;
+        }
+
+        Item item = new Item();
+
+        item.setId(itemDto.getId());
+        item.setName(itemDto.getName());
+        item.setDescription(itemDto.getDescription());
+        item.setAvailable(itemDto.getAvailable());
+        item.setUserId(itemDto.getUserId());
+
+        return item;
+    }
+
 }

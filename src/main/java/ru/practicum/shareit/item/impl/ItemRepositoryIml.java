@@ -33,25 +33,28 @@ public class ItemRepositoryIml implements ItemRepository {
     }
 
     @Override
-    public ItemDto createItem(Item item) {
+    public ItemDto createItem(ItemDto itemDto) {
+        Item item = mapper.convertItemDtoToItem(itemDto);
         if (!items.containsValue(item)) {
             items.put(assignItemId(item), item);
-            return mapper.convertItemToItemDto(item);
+            itemDto.setId(item.getId());
+            return itemDto;
         }
-        log.info("Вещь {} уже существует в базе", item);
-        throw new ObjectAlreadyExistsException("Вещь " + item + "уже существует в базе");
+        log.info("Вещь {} уже существует в базе", itemDto);
+        throw new ObjectAlreadyExistsException("Вещь " + itemDto + "уже существует в базе");
     }
 
     @Override
-    public ItemDto updateItem(long userId, long itemId, Item item) {
+    public ItemDto updateItem(long userId, long itemId, ItemDto itemDto) {
         checkItemExists(itemId);
 
         Item storedItem = items.get(itemId);
+
         if (storedItem.getUserId() == userId) {
-            storedItem.setName(Objects.nonNull(item.getName()) ? item.getName() : storedItem.getName());
-            storedItem.setDescription(Objects.nonNull(item.getDescription()) ? item.getDescription() : storedItem.getDescription());
-            storedItem.setAvailable(Objects.nonNull(item.getAvailable()) ? item.getAvailable() : storedItem.getAvailable());
-            storedItem.setUserId(storedItem.getUserId());
+            storedItem.setName(Objects.nonNull(itemDto.getName()) ? itemDto.getName() : storedItem.getName());
+            storedItem.setDescription(Objects.nonNull(itemDto.getDescription()) ? itemDto.getDescription() : storedItem.getDescription());
+            storedItem.setAvailable(Objects.nonNull(itemDto.getAvailable()) ? itemDto.getAvailable() : storedItem.isAvailable());
+
             return mapper.convertItemToItemDto(storedItem);
         }
         log.info("У пользователя с id = {} нет вещи с id = {}", userId, itemId);
@@ -66,9 +69,9 @@ public class ItemRepositoryIml implements ItemRepository {
 
     public List<ItemDto> getSearchItem(String text) {
         return items.values().stream()
-                .filter(item -> item.getAvailable().equals(true))
-                .filter(item -> new String(item.getName() + item.getDescription()).toLowerCase().contains(text.toLowerCase()))
-                .map(item -> mapper.convertItemToItemDto(item))
+                .filter(Item::isAvailable)
+                .filter(item -> (item.getName() + item.getDescription()).toLowerCase().contains(text.toLowerCase()))
+                .map(mapper::convertItemToItemDto)
                 .collect(Collectors.toList());
     }
 
@@ -76,14 +79,17 @@ public class ItemRepositoryIml implements ItemRepository {
     public List<ItemDto> getAllItemsUser(long userId) {
         return items.values().stream()
                 .filter(item -> item.getUserId() == userId)
-                .map(item -> mapper.convertItemToItemDto(item))
+                .map(mapper::convertItemToItemDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public boolean deleteItemById(long id) {
+        if (!items.containsKey(id)) {
+            return false;
+        }
         items.remove(id);
-        return items.containsKey(id);
+        return true;
     }
 
     private void checkItemExists(long id) {
