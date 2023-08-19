@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item;
 
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.model.Item;
 
 import java.util.List;
 
@@ -15,6 +16,6 @@ public interface ItemService {
 
     List<ItemDto> getAllItemsUser(long userId);
 
-    boolean deleteItemById(long id);
+    void deleteItemById(long id);
 
 }
