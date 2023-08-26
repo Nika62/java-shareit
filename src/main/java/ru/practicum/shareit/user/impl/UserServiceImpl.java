@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.ObjectAlreadyExistsException;
 import ru.practicum.shareit.user.UserMapper;
-import ru.practicum.shareit.user.UserRepository;
 import ru.practicum.shareit.user.UserService;
+import ru.practicum.shareit.user.UserRepository;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.model.User;
 
@@ -43,7 +43,9 @@ public class UserServiceImpl implements UserService {
         user.setEmail(Objects.nonNull(userDto.getEmail()) ? userDto.getEmail() : user.getEmail());
         try {
         return userMapper.convertUserToUserDto(userRepository.save(user));
+
         } catch (DataIntegrityViolationException e) {
+
         throw new ObjectAlreadyExistsException("Пользователь c электронной почтой " + userDto.getEmail() + " зарегистрирован в базе");
         }
     }

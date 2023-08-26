@@ -20,7 +20,7 @@ public class Item {
     private String description;
     @Column
     private boolean available;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name="user_id")
     private User user;
 }

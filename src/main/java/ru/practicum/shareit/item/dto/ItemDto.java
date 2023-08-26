@@ -4,10 +4,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.practicum.shareit.booking.dto.BookingLastNextDto;
+import ru.practicum.shareit.comment.dto.CommentDto;
+import ru.practicum.shareit.user.dto.UserDto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -22,6 +27,9 @@ public class ItemDto {
     private String description;
     @NotNull(message = "Статус не может быть пустым")
     private Boolean available;
-    private long userId;
+    private UserDto user;
+    private List<CommentDto> comments = new ArrayList<>();
+    private BookingLastNextDto lastBooking;
+    private BookingLastNextDto nextBooking;
 
 }

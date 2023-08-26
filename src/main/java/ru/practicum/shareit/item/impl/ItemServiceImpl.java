@@ -4,17 +4,21 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.booking.BookingMapper;
+import ru.practicum.shareit.booking.BookingRepository;
+import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.ObjectAlreadyExistsException;
-import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.item.ItemMapper;
 import ru.practicum.shareit.item.ItemRepository;
 import ru.practicum.shareit.item.ItemService;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.user.UserMapper;
 import ru.practicum.shareit.user.UserRepository;
 import ru.practicum.shareit.user.model.User;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -27,19 +31,22 @@ public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
+    private final BookingRepository bookingRepository;
     private final ItemMapper itemMapper;
+    private final UserMapper userMapper;
+    private final BookingMapper bookingMapper;
 
 
     @Override
     public ItemDto createItem(long userId, ItemDto itemDto) {
-        itemDto.setUserId(userId);
         User user = getUserByIdOrTrows(userId);
+        itemDto.setUser(userMapper.convertUserToUserDto(user));
         try {
-          Item item =  itemRepository.save(itemMapper.convertItemDtoToItem(user, itemDto));
+          Item item =  itemRepository.save(itemMapper.convertItemDtoToItem(itemDto));
           return itemMapper.convertItemToItemDto(item);
 
         } catch(DataIntegrityViolationException e) {
-            throw new ObjectAlreadyExistsException("Вещь уже зарегистрированна в базе");
+            throw new ObjectAlreadyExistsException("Вещь уже зарегистрирована в базе");
         }
     }
 
@@ -58,8 +65,14 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemDto getItemById(long id) {
-        return itemMapper.convertItemToItemDto(getItemByIdOrTrows(id));
+    public ItemDto getItemById(long itemId, long userId) {
+        Item item = getItemByIdOrTrows(itemId);
+        ItemDto itemDto = itemMapper.convertItemToItemDto(item);
+        if (item.getUser().getId() == userId) {
+            recordLastNextBookingOnItem(itemDto, itemId,userId);
+        }
+        return itemDto;
+
     }
 
     @Override
@@ -76,10 +89,15 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDto> getAllItemsUser(long userId) {
-
-        return itemRepository.findAllItemsByUserId(userId).stream()
+        List<ItemDto> items =  itemRepository.findAllItemsByUserIdOrderById(userId).stream()
                 .map(itemMapper::convertItemToItemDto)
                 .collect(Collectors.toList());
+
+        for (int i=0; i < items.size(); i++) {
+            ItemDto itemDto = items.get(i);
+            recordLastNextBookingOnItem(itemDto,itemDto.getId(),userId);
+        }
+        return items;
     }
 
     @Override
@@ -96,5 +114,18 @@ public class ItemServiceImpl implements ItemService {
     private Item getItemByIdOrTrows(long id) {
         return itemRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("Вещи с id = " + id + " нет в базе"));
+    }
+
+    private void recordLastNextBookingOnItem(ItemDto itemDto, long itemId, long userId) {
+
+        List<Booking> pastBookings =  bookingRepository.getLastBooking(itemId, userId, LocalDateTime.now());
+        List<Booking> futureBookings =  bookingRepository.getNextBooking(itemId, userId, LocalDateTime.now());
+
+        Booking lastBooking = pastBookings.isEmpty() ? null : pastBookings.get(0);
+        Booking nextBooking = futureBookings.isEmpty() ? null : futureBookings.get(0);
+
+        itemDto.setLastBooking(bookingMapper.convertBookingToBookingLastNextDto(lastBooking));
+        itemDto.setNextBooking(bookingMapper.convertBookingToBookingLastNextDto(nextBooking));
+
     }
 }
