@@ -14,6 +14,7 @@ import static ru.practicum.shareit.booking.BookingStatus.WAITING;
 @RequiredArgsConstructor
 public class FindByOwnerWaiting implements FindBookingByOwnerStrategy {
     private final BookingRepository bookingRepository;
+
     @Override
     public boolean shouldBeRun(String status) {
         return  status.equals(WAITING.name());

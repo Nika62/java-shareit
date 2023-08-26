@@ -7,10 +7,12 @@ import ru.practicum.shareit.booking.finding.FindBookingStrategy;
 import ru.practicum.shareit.booking.model.Booking;
 
 import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class FindAllWithoutStatus implements FindBookingStrategy {
     private final BookingRepository bookingRepository;
+
     @Override
     public boolean shouldBeRun(String status) {
       return status.equals("ALL");

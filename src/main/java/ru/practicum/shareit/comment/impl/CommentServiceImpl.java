@@ -29,6 +29,7 @@ public class CommentServiceImpl implements CommentService {
     private final ItemRepository itemRepository;
     private final BookingRepository bookingRepository;
     private final CommentMapper commentMapper;
+
     @Override
     public CommentDto createComment(long userId, long itemId, CommentDto commentDto) {
         LocalDateTime time = LocalDateTime.now();
@@ -42,7 +43,7 @@ public class CommentServiceImpl implements CommentService {
         List<Booking> bookings =  bookingRepository.getByUserIdAndItemIdStatusApproved(userId, itemId, time);
         System.out.println(bookings);
 
-        if(bookings.isEmpty()) {
+        if (bookings.isEmpty()) {
                throw new ValidationException("Пользователь с id " + userId + "не может оставить комментарий вещи с id " + itemId);
         }
        commentDto.setCreated(time);

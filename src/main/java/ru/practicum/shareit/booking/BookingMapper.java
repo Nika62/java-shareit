@@ -74,7 +74,7 @@ public class BookingMapper {
     }
 
     public BookingLastNextDto convertBookingToBookingLastNextDto(Booking booking) {
-        if(Objects.isNull(booking)) {
+        if (Objects.isNull(booking)) {
             return null;
         }
         BookingLastNextDto bookingDto = new BookingLastNextDto();

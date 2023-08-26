@@ -20,7 +20,7 @@ public class User {
     @EqualsAndHashCode.Exclude
     @Column
     private String name;
-    @Column(unique=true)
+    @Column(unique = true)
     private String email;
 
     public User(String name) {

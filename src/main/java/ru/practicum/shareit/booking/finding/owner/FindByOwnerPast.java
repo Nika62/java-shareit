@@ -16,6 +16,7 @@ import static ru.practicum.shareit.booking.BookingStatus.APPROVED;
 @RequiredArgsConstructor
 public class FindByOwnerPast implements FindBookingByOwnerStrategy {
     private final BookingRepository bookingRepository;
+
     @Override
     public boolean shouldBeRun(String status) {
         return  status.equals("PAST");
@@ -23,7 +24,7 @@ public class FindByOwnerPast implements FindBookingByOwnerStrategy {
 
     @Override
     public List<Booking> find(long userId) {
-        List<String> statuses=new ArrayList<>();
+        List<String> statuses = new ArrayList<>();
         statuses.add(String.valueOf(APPROVED));
         return bookingRepository.findAllByOwnerIdAndBookingPast(userId, statuses, LocalDateTime.now());
 

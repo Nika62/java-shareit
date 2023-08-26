@@ -14,6 +14,7 @@ import static ru.practicum.shareit.booking.BookingStatus.REJECTED;
 @RequiredArgsConstructor
 public class FindByOwnerRejected implements FindBookingByOwnerStrategy {
     private final BookingRepository bookingRepository;
+
     @Override
     public boolean shouldBeRun(String status) {
         return  status.equals(REJECTED.name());

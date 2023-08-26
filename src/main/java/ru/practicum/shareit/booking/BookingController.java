@@ -21,15 +21,18 @@ public class BookingController {
     @RequestBody BookingDtoCreate bookingDtoCreate) {
         return bookingService.createBooking(userId, bookingDtoCreate);
     }
+
     @PatchMapping("/{bookingId}")
     public BookingDto updateBooking(@PathVariable long bookingId, @RequestParam Boolean approved,
                                     @RequestHeader("X-Sharer-User-Id") long userId) {
         return bookingService.updateBooking(bookingId, approved, userId);
     }
+
     @GetMapping ("/{bookingId}")
     public BookingDto getBookingById(@PathVariable long bookingId, @RequestHeader("X-Sharer-User-Id") long userId) {
         return bookingService.getBookingById(bookingId, userId);
     }
+
     @GetMapping
     List<BookingDto> getAllBookingsByUserIdAndStatus(@RequestHeader("X-Sharer-User-Id") long userId, @RequestParam(defaultValue = "ALL") String state) {
         return bookingService.getAllBookingsByUserIdAndStatus(userId,  state);

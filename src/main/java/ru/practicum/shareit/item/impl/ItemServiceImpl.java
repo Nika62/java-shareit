@@ -45,7 +45,7 @@ public class ItemServiceImpl implements ItemService {
           Item item =  itemRepository.save(itemMapper.convertItemDtoToItem(itemDto));
           return itemMapper.convertItemToItemDto(item);
 
-        } catch(DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException e) {
             throw new ObjectAlreadyExistsException("Вещь уже зарегистрирована в базе");
         }
     }
@@ -54,7 +54,7 @@ public class ItemServiceImpl implements ItemService {
     public ItemDto updateItem(long userId, long itemId, ItemDto itemDto) {
         Item item = getItemByIdOrTrows(itemId);
 
-        if(item.getUser().getId()!=userId) {
+        if (item.getUser().getId() != userId) {
             throw new NotFoundException("У пользователя с id " + userId + " нет вещи с id " + itemId);
         }
         item.setName(Objects.nonNull(itemDto.getName()) ? itemDto.getName() : item.getName());
@@ -80,7 +80,7 @@ public class ItemServiceImpl implements ItemService {
         if (text.isEmpty()) {
             return new ArrayList<>();
         }
-        text = "%"+text.toLowerCase()+"%";
+        text = "%" + text.toLowerCase() + "%";
         List<Item> items =  itemRepository.findAllByNameOrDescriptionAndAvailable(text);
         return items.stream()
                 .map(itemMapper::convertItemToItemDto)
@@ -93,7 +93,7 @@ public class ItemServiceImpl implements ItemService {
                 .map(itemMapper::convertItemToItemDto)
                 .collect(Collectors.toList());
 
-        for (int i=0; i < items.size(); i++) {
+        for (int i = 0; i < items.size(); i++) {
             ItemDto itemDto = items.get(i);
             recordLastNextBookingOnItem(itemDto,itemDto.getId(),userId);
         }

@@ -14,8 +14,10 @@ import static ru.practicum.shareit.booking.BookingStatus.WAITING;
 @RequiredArgsConstructor
 public class FindAllWithWaiting implements FindBookingStrategy {
     private final BookingRepository bookingRepository;
+
     @Override
     public boolean shouldBeRun(String status) {
+
       return  status.equals(WAITING.name());
     }
 

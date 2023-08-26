@@ -17,6 +17,7 @@ import static ru.practicum.shareit.booking.BookingStatus.REJECTED;
 @Component
 public class FindByOwnerCurrent implements FindBookingByOwnerStrategy {
     private final BookingRepository bookingRepository;
+
     @Override
     public boolean shouldBeRun(String status) {
         return  status.equals("CURRENT");
@@ -24,7 +25,7 @@ public class FindByOwnerCurrent implements FindBookingByOwnerStrategy {
 
     @Override
     public List<Booking> find(long userId) {
-        List<String> statuses=new ArrayList<>();
+        List<String> statuses = new ArrayList<>();
         statuses.add(String.valueOf(REJECTED));
         statuses.add(String.valueOf(APPROVED));
         return bookingRepository.findAllByOwnerIdAndBookingCurrent(userId, statuses, LocalDateTime.now());

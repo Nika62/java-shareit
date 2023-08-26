@@ -21,10 +21,10 @@ public class Comment {
     @NotBlank
     private String text;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="item_id")
+    @JoinColumn(name = "item_id")
     private Item item;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="author_id")
+    @JoinColumn(name = "author_id")
     private User author;
     @Column
     private LocalDateTime created;

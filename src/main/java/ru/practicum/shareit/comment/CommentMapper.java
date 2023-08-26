@@ -12,9 +12,10 @@ import java.util.Objects;
 public class CommentMapper {
 
  public Comment convertCommentDtoToComment(CommentDto commentDto) {
-      if(Objects.isNull(commentDto)) {
+      if (Objects.isNull(commentDto)) {
           return null;
       }
+
       Comment comment = new Comment();
       comment.setText(commentDto.getText());
       comment.setCreated(commentDto.getCreated());
@@ -22,7 +23,8 @@ public class CommentMapper {
       return comment;
 
  }
-    public CommentDto convertCommentToCommentDto(Comment comment) {
+
+ public CommentDto convertCommentToCommentDto(Comment comment) {
          if (Objects.isNull(comment)) {
              return null;
          }
@@ -34,4 +36,5 @@ public class CommentMapper {
 
           return commentDto;
     }
+
 }

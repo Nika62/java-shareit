@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
         try {
         user = userRepository.save(userMapper.convertUserDtoToUser(userDto));
 
-        }catch (DataIntegrityViolationException e) {
+        } catch(DataIntegrityViolationException e) {
             throw new ObjectAlreadyExistsException("Пользователь уже зарегистрирован в базе");
         }
         return userMapper.convertUserToUserDto(user);

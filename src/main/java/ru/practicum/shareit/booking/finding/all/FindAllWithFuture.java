@@ -17,6 +17,7 @@ import static ru.practicum.shareit.booking.BookingStatus.WAITING;
 @RequiredArgsConstructor
 public class FindAllWithFuture implements FindBookingStrategy {
     private final BookingRepository bookingRepository;
+
     @Override
     public boolean shouldBeRun(String status) {
       return  status.equals("FUTURE");
@@ -24,7 +25,7 @@ public class FindAllWithFuture implements FindBookingStrategy {
 
     @Override
     public List<Booking> find(long userId) {
-        List<String> statuses=new ArrayList<>();
+        List<String> statuses = new ArrayList<>();
         statuses.add(String.valueOf(WAITING));
         statuses.add(String.valueOf(APPROVED));
         return bookingRepository.findAllByUserIdAndBookingFuture(userId, statuses, LocalDateTime.now());

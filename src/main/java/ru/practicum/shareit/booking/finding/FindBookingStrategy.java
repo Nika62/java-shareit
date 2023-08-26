@@ -5,6 +5,8 @@ import ru.practicum.shareit.booking.model.Booking;
 import java.util.List;
 
 public interface FindBookingStrategy {
-    public boolean shouldBeRun(String status);
-    public List<Booking> find(long userId);
+     boolean shouldBeRun(String status);
+
+     List<Booking> find(long userId);
+
 }
