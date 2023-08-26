@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 
@@ -21,7 +20,7 @@ public class User {
     @EqualsAndHashCode.Exclude
     @Column
     private String name;
-    @Column(unique=true)
+    @Column(unique = true)
     private String email;
 
     public User(String name) {

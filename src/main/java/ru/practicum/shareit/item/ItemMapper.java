@@ -1,13 +1,16 @@
 package ru.practicum.shareit.item;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.user.UserMapper;
 
 @Component
+@RequiredArgsConstructor
 public class ItemMapper {
 
+    private final UserMapper userMapper;
 
     public ItemDto convertItemToItemDto(Item item) {
         if (item == null) {
@@ -20,11 +23,12 @@ public class ItemMapper {
         itemDto.setName(item.getName());
         itemDto.setDescription(item.getDescription());
         itemDto.setAvailable(item.isAvailable());
+        itemDto.setUser(userMapper.convertUserToUserDto(item.getUser()));
 
         return itemDto;
     }
 
-    public Item convertItemDtoToItem(User user, ItemDto itemDto) {
+    public Item convertItemDtoToItem(ItemDto itemDto) {
         if (itemDto == null) {
             return null;
         }
@@ -35,7 +39,7 @@ public class ItemMapper {
         item.setName(itemDto.getName());
         item.setDescription(itemDto.getDescription());
         item.setAvailable(itemDto.getAvailable());
-        item.setUser(user);
+        item.setUser(userMapper.convertUserDtoToUser(itemDto.getUser()));
 
         return item;
     }
