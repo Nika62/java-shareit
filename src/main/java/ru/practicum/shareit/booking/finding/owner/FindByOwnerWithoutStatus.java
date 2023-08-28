@@ -8,6 +8,8 @@ import ru.practicum.shareit.booking.model.Booking;
 
 import java.util.List;
 
+import static ru.practicum.shareit.booking.ResponseState.ALL;
+
 @Component
 @RequiredArgsConstructor
 public class FindByOwnerWithoutStatus implements FindBookingByOwnerStrategy {
@@ -15,7 +17,7 @@ public class FindByOwnerWithoutStatus implements FindBookingByOwnerStrategy {
 
     @Override
     public boolean shouldBeRun(String status) {
-        return status.equals("ALL");
+        return status.equals(ALL.name());
     }
 
     @Override

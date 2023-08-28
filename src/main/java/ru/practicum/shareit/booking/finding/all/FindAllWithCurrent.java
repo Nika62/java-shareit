@@ -12,15 +12,16 @@ import java.util.List;
 
 import static ru.practicum.shareit.booking.BookingStatus.APPROVED;
 import static ru.practicum.shareit.booking.BookingStatus.REJECTED;
+import static ru.practicum.shareit.booking.ResponseState.CURRENT;
 
 @Component
 @RequiredArgsConstructor
-public class FindAllWhitCurrent implements FindBookingStrategy {
+public class FindAllWithCurrent implements FindBookingStrategy {
     private final BookingRepository bookingRepository;
 
     @Override
     public boolean shouldBeRun(String status) {
-        return  status.equals("CURRENT");
+        return status.equals(CURRENT.name());
     }
 
     @Override

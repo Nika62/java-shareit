@@ -11,15 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static ru.practicum.shareit.booking.BookingStatus.APPROVED;
+import static ru.practicum.shareit.booking.ResponseState.PAST;
 
 @RequiredArgsConstructor
 @Component
-public class FindAllWhitPast implements FindBookingStrategy {
+public class FindAllWithPast implements FindBookingStrategy {
     private final BookingRepository bookingRepository;
 
     @Override
     public boolean shouldBeRun(String status) {
-        return  status.equals("PAST");
+        return status.equals(PAST.name());
     }
 
     @Override

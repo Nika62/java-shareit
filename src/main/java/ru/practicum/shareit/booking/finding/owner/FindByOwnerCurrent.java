@@ -12,6 +12,7 @@ import java.util.List;
 
 import static ru.practicum.shareit.booking.BookingStatus.APPROVED;
 import static ru.practicum.shareit.booking.BookingStatus.REJECTED;
+import static ru.practicum.shareit.booking.ResponseState.CURRENT;
 
 @RequiredArgsConstructor
 @Component
@@ -20,7 +21,7 @@ public class FindByOwnerCurrent implements FindBookingByOwnerStrategy {
 
     @Override
     public boolean shouldBeRun(String status) {
-        return  status.equals("CURRENT");
+        return status.equals(CURRENT.name());
     }
 
     @Override

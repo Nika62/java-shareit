@@ -41,7 +41,6 @@ public class CommentServiceImpl implements CommentService {
                 () -> new NotFoundException("Вещь с id " + itemId + " не найдена "));
 
         List<Booking> bookings =  bookingRepository.getByUserIdAndItemIdStatusApproved(userId, itemId, time);
-        System.out.println(bookings);
 
         if (bookings.isEmpty()) {
                throw new ValidationException("Пользователь с id " + userId + "не может оставить комментарий вещи с id " + itemId);

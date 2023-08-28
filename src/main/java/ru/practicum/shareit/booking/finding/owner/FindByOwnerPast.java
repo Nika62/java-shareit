@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static ru.practicum.shareit.booking.BookingStatus.APPROVED;
+import static ru.practicum.shareit.booking.ResponseState.PAST;
 
 @Component
 @RequiredArgsConstructor
@@ -19,7 +20,7 @@ public class FindByOwnerPast implements FindBookingByOwnerStrategy {
 
     @Override
     public boolean shouldBeRun(String status) {
-        return  status.equals("PAST");
+        return status.equals(PAST.name());
     }
 
     @Override

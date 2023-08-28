@@ -11,8 +11,6 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.UserMapper;
 import ru.practicum.shareit.user.model.User;
 
-import java.util.Objects;
-
 @Component
 @RequiredArgsConstructor
 public class BookingMapper {
@@ -21,7 +19,7 @@ public class BookingMapper {
 
     public BookingDto convertBookingToBookingDto(Booking booking) {
 
-        if (Objects.isNull(booking)) {
+        if (booking == null) {
             return null;
         }
 
@@ -37,7 +35,7 @@ public class BookingMapper {
     }
 
     public Booking convertBookingDtoToBooking(User user, Item item, BookingDto bookingDto) {
-        if (Objects.isNull(bookingDto)) {
+        if (bookingDto == null) {
             return null;
         }
 
@@ -55,7 +53,7 @@ public class BookingMapper {
 
     public Booking convertBookingDtoCreateToBooking(User user, Item item, BookingDtoCreate bookingDtoCreate) {
 
-        if (Objects.isNull(bookingDtoCreate)) {
+        if (bookingDtoCreate == null) {
             return null;
         }
 
@@ -70,7 +68,7 @@ public class BookingMapper {
     }
 
     public BookingLastNextDto convertBookingToBookingLastNextDto(Booking booking) {
-        if (Objects.isNull(booking)) {
+        if (booking == null) {
             return null;
         }
         BookingLastNextDto bookingDto = new BookingLastNextDto();
