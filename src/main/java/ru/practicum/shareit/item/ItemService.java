@@ -9,12 +9,12 @@ public interface ItemService {
 
     ItemDto updateItem(long userId, long itemId, ItemDto itemDto);
 
-    ItemDto getItemById(long id);
+    ItemDto getItemById(long itemId, long userId);
 
     List<ItemDto> getSearchItem(String text);
 
     List<ItemDto> getAllItemsUser(long userId);
 
-    boolean deleteItemById(long id);
+    void deleteItemById(long id);
 
 }
