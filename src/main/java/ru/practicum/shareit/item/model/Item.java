@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import ru.practicum.shareit.request.model.Request;
 import ru.practicum.shareit.user.model.User;
 
 import javax.persistence.*;
@@ -27,4 +28,7 @@ public class Item {
     @ManyToOne()
     @JoinColumn(name = "user_id")
     private User user;
+    @ManyToOne()
+    @JoinColumn(name = "request_id")
+    private Request request;
 }

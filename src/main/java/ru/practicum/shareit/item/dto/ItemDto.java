@@ -28,6 +28,7 @@ public class ItemDto {
     @NotNull(message = "Статус не может быть пустым")
     private Boolean available;
     private UserDto user;
+    private long requestId;
     private List<CommentDto> comments = new ArrayList<>();
     private BookingLastNextDto lastBooking;
     private BookingLastNextDto nextBooking;

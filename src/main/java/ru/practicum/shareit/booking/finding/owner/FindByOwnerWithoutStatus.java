@@ -1,6 +1,8 @@
 package ru.practicum.shareit.booking.finding.owner;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.booking.BookingRepository;
 import ru.practicum.shareit.booking.finding.FindBookingByOwnerStrategy;
@@ -21,7 +23,7 @@ public class FindByOwnerWithoutStatus implements FindBookingByOwnerStrategy {
     }
 
     @Override
-    public List<Booking> find(long userId) {
-        return bookingRepository.findAllByOwner(userId);
+    public Page<Booking> find(long userId, PageRequest pageRequest) {
+        return bookingRepository.findAllByOwner(userId, pageRequest);
     }
 }

@@ -1,6 +1,8 @@
 package ru.practicum.shareit.booking.finding.owner;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.booking.BookingRepository;
 import ru.practicum.shareit.booking.finding.FindBookingByOwnerStrategy;
@@ -25,11 +27,11 @@ public class FindByOwnerWithFuture implements FindBookingByOwnerStrategy {
     }
 
     @Override
-    public List<Booking> find(long userId) {
+    public Page<Booking> find(long userId, PageRequest pageRequest) {
         List<String> statuses = new ArrayList<>();
         statuses.add(String.valueOf(WAITING));
         statuses.add(String.valueOf(APPROVED));
-        return bookingRepository.findAllByOwnerIdAndBookingFuture(userId, statuses, LocalDateTime.now());
+        return bookingRepository.findAllByOwnerIdAndBookingFuture(userId, statuses, LocalDateTime.now(), pageRequest);
 
     }
 }

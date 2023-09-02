@@ -1,6 +1,8 @@
 package ru.practicum.shareit.booking.finding.all;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.booking.BookingRepository;
 import ru.practicum.shareit.booking.finding.FindBookingStrategy;
@@ -22,9 +24,9 @@ public class FindAllWithWaiting implements FindBookingStrategy {
     }
 
     @Override
-    public List<Booking> find(long userId) {
+    public Page<Booking> find(long userId, PageRequest pageRequest) {
 
-        return bookingRepository.findAllByUserIdAndBookingStatus(userId, WAITING.name());
+        return bookingRepository.findAllByUserIdAndBookingStatus(userId, WAITING.name(), pageRequest);
 
     }
 }
