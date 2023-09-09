@@ -1,4 +1,4 @@
-package shareit.comment;
+package ru.practicum.shareit.comment;
 
 import ru.practicum.shareit.comment.dto.CommentDto;
 

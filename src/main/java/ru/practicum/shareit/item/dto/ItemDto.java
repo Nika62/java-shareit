@@ -1,4 +1,4 @@
-package shareit.item.dto;
+package ru.practicum.shareit.item.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;

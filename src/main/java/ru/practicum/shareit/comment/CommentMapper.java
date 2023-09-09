@@ -1,4 +1,4 @@
-package shareit.comment;
+package ru.practicum.shareit.comment;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

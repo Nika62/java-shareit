@@ -1,4 +1,4 @@
-package shareit.booking.impl;
+package ru.practicum.shareit.booking.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.EnumUtils;
@@ -53,7 +53,7 @@ public class BookingServiceImpl implements BookingService {
         }
 
         Booking booking = bookingMapper.convertBookingDtoCreateToBooking(booker, item, bookingDtoCreate);
-        booking.setStatus(BookingStatus.WAITING.name());
+        booking.setStatus(WAITING.name());
         return bookingMapper.convertBookingToBookingDto(
                 bookingRepository.save(booking));
 
@@ -65,8 +65,8 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = getBookingOrTrow(bookingId);
         Item item = booking.getItem();
 
-        if (booking.getStatus().equals(BookingStatus.APPROVED.name()) ||
-                booking.getStatus().equals(BookingStatus.REJECTED.name())) {
+        if (booking.getStatus().equals(APPROVED.name()) ||
+                booking.getStatus().equals(REJECTED.name())) {
             throw new ValidationException("Статус бронирования уже был изменен владельцем вещи");
         }
         return updateBookingStatus(item.getUser().getId(), userId, approved, booking);
@@ -162,17 +162,17 @@ public class BookingServiceImpl implements BookingService {
     }
 
     private BookingDto setBookingStatusApproved(Booking booking) {
-        booking.setStatus(String.valueOf(BookingStatus.APPROVED));
+        booking.setStatus(String.valueOf(APPROVED));
         return bookingMapper.convertBookingToBookingDto(bookingRepository.save(booking));
     }
 
     private BookingDto setBookingStatusReject(Booking booking) {
-        booking.setStatus(String.valueOf(BookingStatus.REJECTED));
+        booking.setStatus(String.valueOf(REJECTED));
         return bookingMapper.convertBookingToBookingDto(bookingRepository.save(booking));
     }
 
     private BookingDto setBookingStatusCanceled(Booking booking) {
-        booking.setStatus(BookingStatus.CANCELED.name());
+        booking.setStatus(CANCELED.name());
         return bookingMapper.convertBookingToBookingDto(bookingRepository.save(booking));
     }
 }

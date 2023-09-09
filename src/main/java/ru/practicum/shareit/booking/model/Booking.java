@@ -1,4 +1,4 @@
-package shareit.booking.model;
+package ru.practicum.shareit.booking.model;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

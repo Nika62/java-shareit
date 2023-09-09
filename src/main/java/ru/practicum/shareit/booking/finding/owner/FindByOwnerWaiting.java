@@ -1,4 +1,4 @@
-package shareit.booking.finding.owner;
+package ru.practicum.shareit.booking.finding.owner;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,13 +17,13 @@ public class FindByOwnerWaiting implements FindBookingByOwnerStrategy {
 
     @Override
     public boolean shouldBeRun(String status) {
-        return status.equals(BookingStatus.WAITING.name());
+        return status.equals(WAITING.name());
     }
 
     @Override
     public Page<Booking> find(long userId, PageRequest pageRequest) {
 
-        return bookingRepository.findAllByOwnerIdAndBookingStatus(userId, BookingStatus.WAITING.name(), pageRequest);
+        return bookingRepository.findAllByOwnerIdAndBookingStatus(userId, WAITING.name(), pageRequest);
 
     }
 }

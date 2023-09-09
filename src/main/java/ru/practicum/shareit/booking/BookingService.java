@@ -1,4 +1,4 @@
-package shareit.booking;
+package ru.practicum.shareit.booking;
 
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.dto.BookingDto;

@@ -1,4 +1,4 @@
-package shareit.booking.finding.owner;
+package ru.practicum.shareit.booking.finding.owner;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,7 +17,7 @@ public class FindByOwnerWithoutStatus implements FindBookingByOwnerStrategy {
 
     @Override
     public boolean shouldBeRun(String status) {
-        return status.equals(ResponseState.ALL.name());
+        return status.equals(ALL.name());
     }
 
     @Override

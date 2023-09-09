@@ -1,4 +1,4 @@
-package shareit.booking.finding.all;
+package ru.practicum.shareit.booking.finding.all;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,14 +23,14 @@ public class FindAllWithCurrent implements FindBookingStrategy {
 
     @Override
     public boolean shouldBeRun(String status) {
-        return status.equals(ResponseState.CURRENT.name());
+        return status.equals(CURRENT.name());
     }
 
     @Override
     public Page<Booking> find(long userId, PageRequest pageRequest) {
         List<String> statuses = new ArrayList<>();
-        statuses.add(String.valueOf(BookingStatus.REJECTED));
-        statuses.add(String.valueOf(BookingStatus.APPROVED));
+        statuses.add(String.valueOf(REJECTED));
+        statuses.add(String.valueOf(APPROVED));
         return bookingRepository.findAllByUserIdAndBookingCurrent(userId, statuses, LocalDateTime.now(), pageRequest);
 
     }

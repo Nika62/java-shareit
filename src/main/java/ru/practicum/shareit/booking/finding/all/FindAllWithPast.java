@@ -1,10 +1,11 @@
-package shareit.booking.finding.all;
+package ru.practicum.shareit.booking.finding.all;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.booking.BookingRepository;
+import ru.practicum.shareit.booking.BookingStatus;
 import ru.practicum.shareit.booking.finding.FindBookingStrategy;
 import ru.practicum.shareit.booking.model.Booking;
 
@@ -22,13 +23,13 @@ public class FindAllWithPast implements FindBookingStrategy {
 
     @Override
     public boolean shouldBeRun(String status) {
-        return status.equals(ResponseState.PAST.name());
+        return status.equals(PAST.name());
     }
 
     @Override
     public Page<Booking> find(long userId, PageRequest pageRequest) {
         List<String> statuses = new ArrayList<>();
-        statuses.add(String.valueOf(BookingStatus.APPROVED));
+        statuses.add(String.valueOf(APPROVED));
         return bookingRepository.findAllByUserIdAndBookingPast(userId, statuses, LocalDateTime.now(), pageRequest);
 
     }

@@ -1,4 +1,4 @@
-package shareit.booking.finding.owner;
+package ru.practicum.shareit.booking.finding.owner;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -12,8 +12,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ru.practicum.shareit.booking.BookingStatus.APPROVED;
-import static ru.practicum.shareit.booking.BookingStatus.REJECTED;
+import static ru.practicum.shareit.booking.BookingStatus.*;
 import static ru.practicum.shareit.booking.ResponseState.CURRENT;
 
 @RequiredArgsConstructor
@@ -23,14 +22,14 @@ public class FindByOwnerCurrent implements FindBookingByOwnerStrategy {
 
     @Override
     public boolean shouldBeRun(String status) {
-        return status.equals(ResponseState.CURRENT.name());
+        return status.equals(CURRENT.name());
     }
 
     @Override
     public Page<Booking> find(long userId, PageRequest pageRequest) {
         List<String> statuses = new ArrayList<>();
-        statuses.add(String.valueOf(BookingStatus.REJECTED));
-        statuses.add(String.valueOf(BookingStatus.APPROVED));
+        statuses.add(String.valueOf(REJECTED));
+        statuses.add(String.valueOf(APPROVED));
         return bookingRepository.findAllByOwnerIdAndBookingCurrent(userId, statuses, LocalDateTime.now(), pageRequest);
 
     }

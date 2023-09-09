@@ -1,4 +1,4 @@
-package shareit.booking.finding.owner;
+package ru.practicum.shareit.booking.finding.owner;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,12 +17,12 @@ public class FindByOwnerRejected implements FindBookingByOwnerStrategy {
 
     @Override
     public boolean shouldBeRun(String status) {
-        return status.equals(BookingStatus.REJECTED.name());
+        return status.equals(REJECTED.name());
     }
 
     @Override
     public Page<Booking> find(long userId, PageRequest pageRequest) {
-        return bookingRepository.findAllByOwnerIdAndBookingStatus(userId, BookingStatus.REJECTED.name(), pageRequest);
+        return bookingRepository.findAllByOwnerIdAndBookingStatus(userId, REJECTED.name(), pageRequest);
 
     }
 }

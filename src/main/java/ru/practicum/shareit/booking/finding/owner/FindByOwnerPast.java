@@ -1,4 +1,4 @@
-package shareit.booking.finding.owner;
+package ru.practicum.shareit.booking.finding.owner;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,13 +22,13 @@ public class FindByOwnerPast implements FindBookingByOwnerStrategy {
 
     @Override
     public boolean shouldBeRun(String status) {
-        return status.equals(ResponseState.PAST.name());
+        return status.equals(PAST.name());
     }
 
     @Override
     public Page<Booking> find(long userId, PageRequest pageRequest) {
         List<String> statuses = new ArrayList<>();
-        statuses.add(String.valueOf(BookingStatus.APPROVED));
+        statuses.add(String.valueOf(APPROVED));
         return bookingRepository.findAllByOwnerIdAndBookingPast(userId, statuses, LocalDateTime.now(), pageRequest);
 
     }

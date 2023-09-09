@@ -1,4 +1,4 @@
-package shareit.exception;
+package ru.practicum.shareit.exception;
 
 public class ObjectUnavailableException extends RuntimeException {
 
