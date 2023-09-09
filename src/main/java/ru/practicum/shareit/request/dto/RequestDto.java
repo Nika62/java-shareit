@@ -1,7 +1,8 @@
-package ru.practicum.shareit.request.dto;
+package request.dto;
 
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.practicum.shareit.item.dto.ItemRequestDto;
 
 import javax.validation.constraints.FutureOrPresent;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class RequestDto {
     private long id;
     @NotBlank(message = "Описание не может быть пустым")
@@ -21,4 +23,8 @@ public class RequestDto {
     private LocalDateTime created;
     private List<ItemRequestDto> items = new ArrayList<>();
 
+    public RequestDto(String description, LocalDateTime created) {
+        this.description = description;
+        this.created = created;
+    }
 }

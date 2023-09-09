@@ -1,4 +1,4 @@
-package ru.practicum.shareit.request.impl;
+package request.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

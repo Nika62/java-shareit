@@ -1,4 +1,4 @@
-package ru.practicum.shareit.booking.impl;
+package shareit.booking.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.EnumUtils;
@@ -36,8 +36,8 @@ public class BookingServiceImpl implements BookingService {
     private final ItemRepository itemRepository;
     private final BookingMapper bookingMapper;
     private final List<FindBookingStrategy> strategies;
-
     private final List<FindBookingByOwnerStrategy> strategiesForOwner;
+
 
     @Override
     public BookingDto createBooking(long userId, BookingDtoCreate bookingDtoCreate) {
@@ -53,7 +53,7 @@ public class BookingServiceImpl implements BookingService {
         }
 
         Booking booking = bookingMapper.convertBookingDtoCreateToBooking(booker, item, bookingDtoCreate);
-        booking.setStatus(WAITING.name());
+        booking.setStatus(BookingStatus.WAITING.name());
         return bookingMapper.convertBookingToBookingDto(
                 bookingRepository.save(booking));
 
@@ -65,8 +65,8 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = getBookingOrTrow(bookingId);
         Item item = booking.getItem();
 
-        if (booking.getStatus().equals(APPROVED.name()) ||
-                booking.getStatus().equals(REJECTED.name())) {
+        if (booking.getStatus().equals(BookingStatus.APPROVED.name()) ||
+                booking.getStatus().equals(BookingStatus.REJECTED.name())) {
             throw new ValidationException("Статус бронирования уже был изменен владельцем вещи");
         }
         return updateBookingStatus(item.getUser().getId(), userId, approved, booking);
@@ -153,28 +153,26 @@ public class BookingServiceImpl implements BookingService {
             if (approved.equals(false)) {
                 return setBookingStatusReject(booking);
             }
-        } else if (bookingItemUserId != responseUserId) {
-            if (approved.equals(false)) {
-                return setBookingStatusCanceled(booking);
-            } else {
-                throw new NotFoundException("У пользователя с id = " + responseUserId + " нет прав для подтверждения бронирования");
-            }
+        } else if (responseUserId == booking.getBooker().getId() && approved.equals(false)) {
+            return setBookingStatusCanceled(booking);
+        } else {
+            throw new NotFoundException("У пользователя с id = " + responseUserId + " нет прав для подтверждения бронирования");
         }
-        throw new ValidationException("Произошла ошибка при обновлении статуса бронирования");
+        return null;
     }
 
     private BookingDto setBookingStatusApproved(Booking booking) {
-        booking.setStatus(String.valueOf(APPROVED));
+        booking.setStatus(String.valueOf(BookingStatus.APPROVED));
         return bookingMapper.convertBookingToBookingDto(bookingRepository.save(booking));
     }
 
     private BookingDto setBookingStatusReject(Booking booking) {
-        booking.setStatus(String.valueOf(REJECTED));
+        booking.setStatus(String.valueOf(BookingStatus.REJECTED));
         return bookingMapper.convertBookingToBookingDto(bookingRepository.save(booking));
     }
 
     private BookingDto setBookingStatusCanceled(Booking booking) {
-        booking.setStatus(CANCELED.name());
+        booking.setStatus(BookingStatus.CANCELED.name());
         return bookingMapper.convertBookingToBookingDto(bookingRepository.save(booking));
     }
 }

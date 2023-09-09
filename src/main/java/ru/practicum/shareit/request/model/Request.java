@@ -1,4 +1,4 @@
-package ru.practicum.shareit.request.model;
+package request.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,7 +1,6 @@
-package ru.practicum.shareit.request;
+package request;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +13,6 @@ import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.request.dto.RequestDto;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController

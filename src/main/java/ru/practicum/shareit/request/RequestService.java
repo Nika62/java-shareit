@@ -1,4 +1,4 @@
-package ru.practicum.shareit.request;
+package request;
 
 import ru.practicum.shareit.request.dto.RequestDto;
 
