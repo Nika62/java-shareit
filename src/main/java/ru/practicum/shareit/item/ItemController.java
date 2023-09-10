@@ -19,7 +19,6 @@ public class ItemController {
 
     private final CommentService commentService;
 
-    private final RequestService requestService;
 
     @PostMapping
     public ItemDto createItem(@RequestHeader("X-Sharer-User-Id") long userId,

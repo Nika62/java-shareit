@@ -24,4 +24,9 @@ public class CommentDto {
         this.authorName = authorName;
         this.created = created;
     }
+
+    public CommentDto(String text, String authorName) {
+        this.text = text;
+        this.authorName = authorName;
+    }
 }

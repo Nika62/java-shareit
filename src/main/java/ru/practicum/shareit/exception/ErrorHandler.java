@@ -18,7 +18,7 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     ErrorResponse handleMethodArgumentNotValidException(final MethodArgumentNotValidException e) {
-        return new ErrorResponse("Ошибка валидации данных. Проверьте правильность заполнения полей");
+        return new ErrorResponse("Ошибка валидации данных. Проверьте правильность заполнения полей" + e.getMessage());
     }
 
     @ExceptionHandler

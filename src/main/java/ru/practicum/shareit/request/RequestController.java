@@ -23,8 +23,8 @@ public class RequestController {
     private final RequestService requestService;
 
     @PostMapping
-    public RequestDto saveItemRequest(@RequestHeader("X-Sharer-User-Id") long userId,
-                                      @Valid @RequestBody RequestDto requestDto) {
+    public RequestDto saveRequest(@RequestHeader("X-Sharer-User-Id") long userId,
+                                  @Valid @RequestBody RequestDto requestDto) {
         return requestService.save(userId, requestDto);
     }
 

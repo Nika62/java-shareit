@@ -10,7 +10,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.practicum.shareit.comment.CommentService;
 import ru.practicum.shareit.comment.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.request.RequestService;
 import ru.practicum.shareit.user.dto.UserDto;
 
 
@@ -42,16 +41,14 @@ import static ru.practicum.shareit.HelperCreationEntities.getUserDto;
 class ItemControllerTest {
 
     @Autowired
-    ObjectMapper mapper;
+    private ObjectMapper mapper;
 
     @MockBean
-    ItemService itemService;
+    private ItemService itemService;
 
     @MockBean
-    CommentService commentService;
+    private CommentService commentService;
 
-    @MockBean
-    RequestService requestService;
 
     @Autowired
     private MockMvc mvc;
