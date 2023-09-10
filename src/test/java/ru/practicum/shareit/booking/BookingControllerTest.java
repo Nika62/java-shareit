@@ -1,6 +1,7 @@
 package ru.practicum.shareit.booking;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -34,7 +35,8 @@ class BookingControllerTest {
     private BookingDtoCreate bookingDtoCreate = new BookingDtoCreate(bookingDto.getStart(), bookingDto.getEnd(), bookingDto.getItem().getId());
 
     @Test
-    void createBooking() throws Exception {
+    @SneakyThrows
+    void createBooking() {
         when(bookingService.createBooking(anyLong(), any(BookingDtoCreate.class)))
                 .thenReturn(bookingDto);
 
