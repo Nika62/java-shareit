@@ -2,7 +2,6 @@ package ru.practicum.shareit.item;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.item.model.Item;
@@ -17,5 +16,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     @Query("from Item  i where i.user.id =?1 ORDER BY i.id")
     List<Item> findAllItemsByUserIdOrderById(long id);
+
+    List<Item> findAllItemsByRequestId(long id);
 
 }

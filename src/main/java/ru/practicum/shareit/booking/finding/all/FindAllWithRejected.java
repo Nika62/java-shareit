@@ -1,12 +1,12 @@
 package ru.practicum.shareit.booking.finding.all;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.booking.BookingRepository;
 import ru.practicum.shareit.booking.finding.FindBookingStrategy;
 import ru.practicum.shareit.booking.model.Booking;
-
-import java.util.List;
 
 import static ru.practicum.shareit.booking.BookingStatus.REJECTED;
 
@@ -17,13 +17,13 @@ public class FindAllWithRejected implements FindBookingStrategy {
 
     @Override
     public boolean shouldBeRun(String status) {
-      return  status.equals(REJECTED.name());
+        return status.equals(REJECTED.name());
     }
 
     @Override
-    public List<Booking> find(long userId) {
+    public Page<Booking> find(long userId, PageRequest pageRequest) {
 
-        return bookingRepository.findAllByUserIdAndBookingStatus(userId, REJECTED.name());
+        return bookingRepository.findAllByUserIdAndBookingStatus(userId, REJECTED.name(), pageRequest);
 
     }
 }

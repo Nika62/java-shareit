@@ -18,6 +18,7 @@ public class ItemController {
 
     private final CommentService commentService;
 
+
     @PostMapping
     public ItemDto createItem(@RequestHeader("X-Sharer-User-Id") long userId,
                               @Valid @RequestBody ItemDto item) {
@@ -31,8 +32,8 @@ public class ItemController {
     }
 
     @GetMapping("/{itemId}")
-    public ItemDto getIemById(@PathVariable("itemId") long itemId, @RequestHeader("X-Sharer-User-Id") long userId) {
-        ItemDto itemDto =  itemService.getItemById(itemId, userId);
+    public ItemDto getIemById(@PathVariable long itemId, @RequestHeader("X-Sharer-User-Id") long userId) {
+        ItemDto itemDto = itemService.getItemById(itemId, userId);
         itemDto.setComments(commentService.getAllCommentsByItemId(itemId));
         return itemDto;
     }
@@ -47,7 +48,7 @@ public class ItemController {
         return itemService.getAllItemsUser(userId);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{itemId}")
     public void deleteItemBy(@PathVariable long itemId) {
         itemService.deleteItemById(itemId);
     }

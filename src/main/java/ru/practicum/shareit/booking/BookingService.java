@@ -16,8 +16,8 @@ public interface BookingService {
 
     BookingDto getBookingById(long bookingId, long userId);
 
-    List<BookingDto> getAllBookingsByUserIdAndStatus(long userId, String status);
+    List<BookingDto> getAllBookingsByUserIdAndStatus(long userId, String status, int from, int size);
 
-    List<BookingDto> getAllBookingsByOwnerAndStatus(long ownerId, String status);
+    List<BookingDto> getAllBookingsByOwnerAndStatus(long ownerId, String status, int from, int size);
 
 }

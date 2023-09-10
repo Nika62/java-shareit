@@ -43,7 +43,7 @@ public class CommentServiceImpl implements CommentService {
         List<Booking> bookings =  bookingRepository.getByUserIdAndItemIdStatusApproved(userId, itemId, time);
 
         if (bookings.isEmpty()) {
-               throw new ValidationException("Пользователь с id " + userId + "не может оставить комментарий вещи с id " + itemId);
+               throw new ValidationException("Пользователь с id " + userId + " не может оставить комментарий вещи с id " + itemId);
         }
        commentDto.setCreated(time);
        Comment comment  = commentMapper.convertCommentDtoToComment(commentDto);

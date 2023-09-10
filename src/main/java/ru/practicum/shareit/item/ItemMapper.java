@@ -3,8 +3,11 @@ package ru.practicum.shareit.item;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemRequestDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.UserMapper;
+
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -25,6 +28,10 @@ public class ItemMapper {
         itemDto.setAvailable(item.isAvailable());
         itemDto.setUser(userMapper.convertUserToUserDto(item.getUser()));
 
+        if (Objects.nonNull(item.getRequest())) {
+            itemDto.setRequestId(item.getRequest().getId());
+        }
+
         return itemDto;
     }
 
@@ -42,6 +49,22 @@ public class ItemMapper {
         item.setUser(userMapper.convertUserDtoToUser(itemDto.getUser()));
 
         return item;
+    }
+
+    public ItemRequestDto convertItemToItemRequestDto(Item item) {
+        if (item == null) {
+            return null;
+        }
+        ItemRequestDto temRequestDto = new ItemRequestDto();
+        temRequestDto.setId(item.getId());
+        temRequestDto.setName(item.getName());
+        temRequestDto.setDescription(item.getDescription());
+        temRequestDto.setAvailable(item.isAvailable());
+
+        if (Objects.nonNull(item.getRequest())) {
+            temRequestDto.setRequestId(item.getRequest().getId());
+        }
+        return temRequestDto;
     }
 
 }

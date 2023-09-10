@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingDtoCreate;
+import ru.practicum.shareit.exception.ValidationException;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -34,13 +35,25 @@ public class BookingController {
     }
 
     @GetMapping
-    List<BookingDto> getAllBookingsByUserIdAndStatus(@RequestHeader("X-Sharer-User-Id") long userId, @RequestParam(defaultValue = "ALL") String state) {
-        return bookingService.getAllBookingsByUserIdAndStatus(userId,  state);
+    List<BookingDto> getAllBookingsByUserIdAndStatus(@RequestHeader("X-Sharer-User-Id") long userId,
+                                                     @RequestParam(defaultValue = "ALL") String state,
+                                                     @RequestParam(defaultValue = "0") int from,
+                                                     @RequestParam(defaultValue = "10") int size) {
+        if (from < 0 || size <= 0) {
+            throw new ValidationException("Параметры запроса from = " + from + " или size = " + size + " введены некорректно");
+        }
+        return bookingService.getAllBookingsByUserIdAndStatus(userId, state, from, size);
     }
 
     @GetMapping("/owner")
-    List<BookingDto> getAllBookingsByOwner(@RequestHeader("X-Sharer-User-Id") long userId, @RequestParam(defaultValue = "ALL") String state) {
-        return bookingService.getAllBookingsByOwnerAndStatus(userId, state);
+    List<BookingDto> getAllBookingsByOwner(@RequestHeader("X-Sharer-User-Id") long userId,
+                                           @RequestParam(defaultValue = "ALL") String state,
+                                           @RequestParam(defaultValue = "0") int from,
+                                           @RequestParam(defaultValue = "10") int size) {
+        if (from < 0 || size <= 0) {
+            throw new ValidationException("Параметры запроса from = " + from + " или size = " + size + " введены некорректно");
+        }
+        return bookingService.getAllBookingsByOwnerAndStatus(userId, state, from, size);
     }
 
 }
