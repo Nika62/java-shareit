@@ -37,7 +37,7 @@ class BookingControllerTest {
     @Test
     @SneakyThrows
     void createBooking() {
-        when(bookingService.createBooking(anyLong(), any(BookingDtoCreate.class)))
+        when(bookingService.createBooking(anyLong(), any()))
                 .thenReturn(bookingDto);
 
         mvc.perform(post("/bookings")
