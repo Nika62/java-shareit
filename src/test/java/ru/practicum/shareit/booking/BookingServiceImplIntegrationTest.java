@@ -11,14 +11,16 @@ import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingDtoCreate;
 import ru.practicum.shareit.booking.finding.FindBookingByOwnerStrategy;
 import ru.practicum.shareit.booking.finding.FindBookingStrategy;
+import ru.practicum.shareit.exception.ObjectUnavailableException;
 import ru.practicum.shareit.item.ItemRepository;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.UserRepository;
+import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static ru.practicum.shareit.HelperCreationEntities.*;
 import static ru.practicum.shareit.booking.BookingStatus.*;
 
@@ -57,6 +59,17 @@ public class BookingServiceImplIntegrationTest {
         assertEquals(bookingDto.getBooker().getId(), 2);
         assertEquals(bookingDto.getStatus(), WAITING);
     }
+
+    @Test
+    public void shouldCreateBookingItemNotExist() {
+        Item item = itemRepository.save(new Item("item name", "item description", false, new User(1L, "user name", "user@mail.com")));
+        Exception e = assertThrows(ObjectUnavailableException.class,
+                () -> {
+                    bookingService.createBooking(2, new BookingDtoCreate(getBookingAfterCreate().getStart(), getBookingAfterCreate().getEnd(), 2));
+                });
+        assertEquals("Вещь " + item + " недоступна для бронирования", e.getMessage());
+    }
+
 
     @Test
     public void shouldUpdateBooking() {

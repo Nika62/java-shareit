@@ -52,6 +52,18 @@ class BookingControllerTest {
                 .andExpect(jsonPath("$.status").value(WAITING.name()));
     }
 
+    @Test
+    @SneakyThrows
+    void shouldExceptionCreateBooking() {
+
+        mvc.perform(post("/bookings")
+                        .header("X-Sharer-User-Id", 3)
+                        .content(mapper.writeValueAsString(new BookingDtoCreate(LocalDateTime.of(1999, 9, 9, 9, 12, 12), LocalDateTime.of(2000, 9, 9, 9, 12, 12), 1)))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("Ошибка валидации данных. Проверьте правильность заполнения полей"));
+    }
+
 
     @Test
     void updateBooking() throws Exception {

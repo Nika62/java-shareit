@@ -84,4 +84,15 @@ class RequestControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json(mapper.writeValueAsString(List.of(requestDto))));
     }
+
+    @Test
+    void shouldReturnExceptionGetALLRequests() throws Exception {
+
+        mvc.perform(get("/requests/all")
+                        .header("X-Sharer-User-Id", 2)
+                        .param("from", "0")
+                        .param("size", "-4"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("Параметры запроса from = 0 или size = -4 введены некорректно"));
+    }
 }
