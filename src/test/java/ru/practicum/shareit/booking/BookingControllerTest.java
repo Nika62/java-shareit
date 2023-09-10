@@ -31,7 +31,7 @@ class BookingControllerTest {
     private BookingService bookingService;
     @Autowired
     private MockMvc mvc;
-    private BookingDto bookingDto = new BookingDto(1, LocalDateTime.of(2024, 4, 4, 12, 12, 01), LocalDateTime.of(2024, 4, 4, 13, 12, 01), getUserDtoId3(), getItemDto(), WAITING);
+    private BookingDto bookingDto = new BookingDto(1, LocalDateTime.of(2024, 4, 4, 12, 12, 1), LocalDateTime.of(2024, 4, 4, 13, 12, 1), getUserDtoId3(), getItemDto(), WAITING);
     private BookingDtoCreate bookingDtoCreate = new BookingDtoCreate(bookingDto.getStart(), bookingDto.getEnd(), bookingDto.getItem().getId());
 
     @Test
