@@ -13,15 +13,11 @@ import ru.practicum.shareit.request.dto.RequestDto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = RequestController.class)
 class RequestControllerTest {
@@ -87,5 +83,16 @@ class RequestControllerTest {
                         .param("size", "3"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(mapper.writeValueAsString(List.of(requestDto))));
+    }
+
+    @Test
+    void shouldReturnExceptionGetALLRequests() throws Exception {
+
+        mvc.perform(get("/requests/all")
+                        .header("X-Sharer-User-Id", 2)
+                        .param("from", "0")
+                        .param("size", "-4"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("Параметры запроса from = 0 или size = -4 введены некорректно"));
     }
 }

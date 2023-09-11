@@ -12,29 +12,12 @@ import ru.practicum.shareit.comment.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.user.dto.UserDto;
 
-
 import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.practicum.shareit.HelperCreationEntities.getCommentDto;
-import static ru.practicum.shareit.HelperCreationEntities.getItemDto;
-import static ru.practicum.shareit.HelperCreationEntities.getItemDtoWithoutComments;
-import static ru.practicum.shareit.HelperCreationEntities.getLastBookingDto;
-import static ru.practicum.shareit.HelperCreationEntities.getListCommentsDto;
-import static ru.practicum.shareit.HelperCreationEntities.getListItemDto;
-import static ru.practicum.shareit.HelperCreationEntities.getNextBookingDto;
-import static ru.practicum.shareit.HelperCreationEntities.getUserDto;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static ru.practicum.shareit.HelperCreationEntities.*;
 
 
 @WebMvcTest(controllers = ItemController.class)

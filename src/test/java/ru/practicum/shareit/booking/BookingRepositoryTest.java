@@ -16,10 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static ru.practicum.shareit.HelperCreationEntities.getBooking;
-import static ru.practicum.shareit.HelperCreationEntities.getItem;
-import static ru.practicum.shareit.HelperCreationEntities.getUser;
-import static ru.practicum.shareit.HelperCreationEntities.getUser2;
+import static ru.practicum.shareit.HelperCreationEntities.*;
 import static ru.practicum.shareit.booking.BookingStatus.*;
 
 @DataJpaTest

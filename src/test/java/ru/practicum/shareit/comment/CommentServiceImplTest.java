@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.practicum.shareit.booking.BookingRepository;
 import ru.practicum.shareit.booking.model.Booking;
@@ -17,18 +16,14 @@ import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.item.ItemRepository;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.UserRepository;
-import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static ru.practicum.shareit.HelperCreationEntities.getBooking;
-import static ru.practicum.shareit.HelperCreationEntities.getItem;
-import static ru.practicum.shareit.HelperCreationEntities.getItemDtoForCreate;
-import static ru.practicum.shareit.HelperCreationEntities.getUser;
-import static ru.practicum.shareit.HelperCreationEntities.getUser2;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static ru.practicum.shareit.HelperCreationEntities.*;
 import static ru.practicum.shareit.booking.BookingStatus.APPROVED;
 
 @SpringBootTest

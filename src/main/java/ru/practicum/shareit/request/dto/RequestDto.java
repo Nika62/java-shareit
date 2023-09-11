@@ -29,4 +29,8 @@ public class RequestDto {
         this.description = description;
         this.created = created;
     }
+
+    public RequestDto(String description) {
+        this.description = description;
+    }
 }

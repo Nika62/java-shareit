@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -35,13 +34,9 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
-import static ru.practicum.shareit.HelperCreationEntities.getBookingAfterCreate;
-import static ru.practicum.shareit.HelperCreationEntities.getItemAllField;
-import static ru.practicum.shareit.HelperCreationEntities.getUserALLField;
+import static ru.practicum.shareit.HelperCreationEntities.*;
 import static ru.practicum.shareit.booking.BookingStatus.*;
 import static ru.practicum.shareit.booking.ResponseState.CURRENT;
 
@@ -80,7 +75,7 @@ class BookingServiceImplTest {
         booking = getBookingAfterCreate();
         booker = getUserALLField();
         item = getItemAllField();
-        owner = new User(1, "name", "name@email.ru");
+        owner = new User(1L, "name", "name@email.ru");
     }
 
     @Test
@@ -91,7 +86,7 @@ class BookingServiceImplTest {
                 .thenReturn(Optional.of(item));
         when(bookingRepository.save(any(Booking.class)))
                 .thenReturn(booking);
-        BookingDto returnedBookingDto = bookingService.createBooking(2l, new BookingDtoCreate(getBookingAfterCreate().getStart(), getBookingAfterCreate().getEnd(), 1L));
+        BookingDto returnedBookingDto = bookingService.createBooking(2L, new BookingDtoCreate(getBookingAfterCreate().getStart(), getBookingAfterCreate().getEnd(), 1L));
         assertEquals(booking.getItem().getId(), returnedBookingDto.getItem().getId());
         assertEquals(booking.getBooker().getId(), returnedBookingDto.getBooker().getId());
         assertEquals(returnedBookingDto.getStatus(), WAITING);
@@ -103,7 +98,7 @@ class BookingServiceImplTest {
                 .thenThrow(new NotFoundException("Пользователь с id = 99 не найден"));
         Exception e = assertThrows(NotFoundException.class,
                 () -> {
-                    bookingService.createBooking(99l, new BookingDtoCreate(getBookingAfterCreate().getStart(), getBookingAfterCreate().getEnd(), 1L));
+                    bookingService.createBooking(99L, new BookingDtoCreate(getBookingAfterCreate().getStart(), getBookingAfterCreate().getEnd(), 1L));
                 });
         assertEquals("Пользователь с id = 99 не найден", e.getMessage());
     }
@@ -117,7 +112,7 @@ class BookingServiceImplTest {
 
         Exception e = assertThrows(NotFoundException.class,
                 () -> {
-                    bookingService.createBooking(2l, new BookingDtoCreate(getBookingAfterCreate().getStart(), getBookingAfterCreate().getEnd(), 99L));
+                    bookingService.createBooking(2L, new BookingDtoCreate(getBookingAfterCreate().getStart(), getBookingAfterCreate().getEnd(), 99L));
                 });
         assertEquals("Вещь с id = 99 не найдена", e.getMessage());
     }
@@ -131,7 +126,7 @@ class BookingServiceImplTest {
 
         Exception e = assertThrows(NotFoundException.class,
                 () -> {
-                    bookingService.createBooking(1l, new BookingDtoCreate(getBookingAfterCreate().getStart(), getBookingAfterCreate().getEnd(), 1L));
+                    bookingService.createBooking(1L, new BookingDtoCreate(getBookingAfterCreate().getStart(), getBookingAfterCreate().getEnd(), 1L));
                 });
         assertEquals("Вещь для бронирования не найдена", e.getMessage());
     }
@@ -145,7 +140,7 @@ class BookingServiceImplTest {
                 .thenReturn(Optional.of(item));
         Exception e = assertThrows(ObjectUnavailableException.class,
                 () -> {
-                    bookingService.createBooking(2l, new BookingDtoCreate(getBookingAfterCreate().getStart(), getBookingAfterCreate().getEnd(), 1L));
+                    bookingService.createBooking(2L, new BookingDtoCreate(getBookingAfterCreate().getStart(), getBookingAfterCreate().getEnd(), 1L));
                 });
         assertEquals("Вещь " + item + " недоступна для бронирования", e.getMessage());
     }
@@ -154,7 +149,7 @@ class BookingServiceImplTest {
     void shouldReturnExceptionCreateBookingWrongTime() {
         Exception e = assertThrows(ValidationException.class,
                 () -> {
-                    bookingService.createBooking(2l, new BookingDtoCreate(getBookingAfterCreate().getEnd(), getBookingAfterCreate().getStart(), 1L));
+                    bookingService.createBooking(2L, new BookingDtoCreate(getBookingAfterCreate().getEnd(), getBookingAfterCreate().getStart(), 1L));
                 });
         assertEquals("Дата окончания бронирования должна быть позже даты начала бронирования", e.getMessage());
     }
@@ -217,7 +212,7 @@ class BookingServiceImplTest {
 
     @Test
     void getBookingById() {
-        when(bookingRepository.findBookingByIdAndByUserId(1l, 2l))
+        when(bookingRepository.findBookingByIdAndByUserId(1L, 2L))
                 .thenReturn(Optional.of(booking));
 
         BookingDto returnedBookingDto = bookingService.getBookingById(1, 2);

@@ -32,7 +32,7 @@ class UserDtoTest {
     void testDeserializeUserDto() throws Exception {
         String content = "{\"id\":1,\"name\":\"имя\",\"email\":\"почта.doe@mail.com\"}";
 
-        assertThat(this.json.parse(content)).isEqualTo(new UserDto(1l, "имя", "почта.doe@mail.com"));
+        assertThat(this.json.parse(content)).isEqualTo(new UserDto(1L, "имя", "почта.doe@mail.com"));
         assertThat(this.json.parseObject(content).getName()).isEqualTo("имя");
     }
 

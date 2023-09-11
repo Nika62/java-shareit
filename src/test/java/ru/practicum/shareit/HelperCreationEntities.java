@@ -22,15 +22,15 @@ public class HelperCreationEntities {
     }
 
     public static UserDto getUserDto() {
-        return new UserDto(1, "user name", "user@mail.com");
+        return new UserDto(1L, "user name", "user@mail.com");
     }
 
     public static UserDto getUserDtoId3() {
-        return new UserDto(3, "user name3", "user3@mail.com");
+        return new UserDto(3L, "user name3", "user3@mail.com");
     }
 
     public static List<UserDto> getListUserDto() {
-        return List.of(getUserDto(), new UserDto(2, "user2 mame", "user2@mail.com"));
+        return List.of(getUserDto(), new UserDto(2L, "user2 mame", "user2@mail.com"));
     }
 
     public static User getUser() {
@@ -38,7 +38,7 @@ public class HelperCreationEntities {
     }
 
     public static User getUserALLField() {
-        return new User(2l, "user name2", "user2@mail.com");
+        return new User(2L, "user name2", "user2@mail.com");
     }
 
     public static User getUser2() {
@@ -46,11 +46,11 @@ public class HelperCreationEntities {
     }
 
     public static CommentDto getCommentDto() {
-        return new CommentDto(1l, "text comment", "name author comment", LocalDateTime.of(2023, 9, 3, 9, 9, 1));
+        return new CommentDto(1L, "text comment", "name author comment", LocalDateTime.of(2023, 9, 3, 9, 9, 1));
     }
 
     public static CommentDto getCommentDto2() {
-        return new CommentDto(2l, "text comment2", "name author comment2", LocalDateTime.of(2023, 9, 3, 10, 10, 1));
+        return new CommentDto(2L, "text comment2", "name author comment2", LocalDateTime.of(2023, 9, 3, 10, 10, 1));
     }
 
     public static List<CommentDto> getListCommentsDto() {
@@ -86,11 +86,11 @@ public class HelperCreationEntities {
     }
 
     public static Item getItem() {
-        return new Item("item name", "item description", true, new User(1, "user name", "user@mail.com"));
+        return new Item("item name", "item description", true, new User(1L, "user name", "user@mail.com"));
     }
 
     public static Item getItemAllField() {
-        return new Item(1l, "item name", "item description", true, new User(1, "user name", "user@mail.com"));
+        return new Item(1L, "item name", "item description", true, new User(1L, "user name", "user@mail.com"));
     }
 
     public static RequestDto getRequestForCreate() {
@@ -98,11 +98,11 @@ public class HelperCreationEntities {
     }
 
     public static BookingDto getBookingDto() {
-        return new BookingDto(1, LocalDateTime.of(2023, 9, 4, 10, 10, 1), LocalDateTime.of(2023, 9, 5, 10, 10, 1), getUserDtoId3(), getItemDto(), WAITING);
+        return new BookingDto(1L, LocalDateTime.of(2023, 9, 4, 10, 10, 1), LocalDateTime.of(2023, 9, 5, 10, 10, 1), getUserDtoId3(), getItemDto(), WAITING);
     }
 
     public static Booking getBookingAfterCreate() {
-        return new Booking(1l, LocalDateTime.of(2023, 9, 4, 10, 10, 1), LocalDateTime.of(2023, 9, 5, 10, 10, 1), getItemAllField(), getUserALLField(), WAITING.name());
+        return new Booking(1L, LocalDateTime.of(2023, 9, 4, 10, 10, 1), LocalDateTime.of(2023, 9, 5, 10, 10, 1), getItemAllField(), getUserALLField(), WAITING.name());
     }
 
     public static Booking getBooking() {

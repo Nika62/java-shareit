@@ -18,10 +18,7 @@ import ru.practicum.shareit.user.dto.UserDto;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static ru.practicum.shareit.HelperCreationEntities.getItemDtoForCreate;
-import static ru.practicum.shareit.HelperCreationEntities.getItemDtoForCreateRequestId;
-import static ru.practicum.shareit.HelperCreationEntities.getRequestForCreate;
-import static ru.practicum.shareit.HelperCreationEntities.getUserDtoWithoutId;
+import static ru.practicum.shareit.HelperCreationEntities.*;
 
 @SpringBootTest
 @AutoConfigureTestDatabase

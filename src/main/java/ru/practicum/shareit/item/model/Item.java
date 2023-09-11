@@ -40,6 +40,14 @@ public class Item {
         this.user = user;
     }
 
+    public Item(String name, String description, boolean available, User user, Request request) {
+        this.name = name;
+        this.description = description;
+        this.available = available;
+        this.user = user;
+        this.request = request;
+    }
+
     public Item(String name, String description, boolean available, User user) {
         this.name = name;
         this.description = description;
