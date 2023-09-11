@@ -3,6 +3,7 @@ package ru.practicum.shareit.booking.impl;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.EnumUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.BookingMapper;
@@ -85,12 +86,12 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<BookingDto> getAllBookingsByUserIdAndStatus(long userId, String status, int from, int size) {
         if (!EnumUtils.isValidEnum(ResponseState.class, status)) {
-            throw new ValidationException("Unknown state: UNSUPPORTED_STATUS");
+            throw new ValidationException("Unknown state: " + status);
         }
         PageRequest pageRequest = PageRequest.of(from / size, size);
 
         Page<Booking> bookings = strategies.stream().filter(findBookingStrategy -> findBookingStrategy.shouldBeRun(status))
-                .map(strategy -> strategy.find(userId, pageRequest)).collect(Collectors.toList()).get(0);
+                .map(strategy -> strategy.find(userId, pageRequest)).findFirst().orElse(new PageImpl<>(List.of()));
         List<BookingDto> bookingsDto = bookings.get().map(bookingMapper::convertBookingToBookingDto).collect(Collectors.toList());
 
         returnTrowIsEmptyList(bookingsDto);
@@ -100,13 +101,13 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<BookingDto> getAllBookingsByOwnerAndStatus(long ownerId, String status, int from, int size) {
         if (!EnumUtils.isValidEnum(ResponseState.class, status)) {
-            throw new ValidationException("Unknown state: UNSUPPORTED_STATUS");
+            throw new ValidationException("Unknown state: " + status);
         }
 
         PageRequest pageRequest = PageRequest.of(from / size, size);
 
         Page<Booking> bookings = strategiesForOwner.stream().filter(findBookingByOwnerStrategy -> findBookingByOwnerStrategy.shouldBeRun(status))
-                .map(strategy -> strategy.find(ownerId, pageRequest)).collect(Collectors.toList()).get(0);
+                .map(strategy -> strategy.find(ownerId, pageRequest)).findFirst().orElse(new PageImpl<>(List.of()));
 
         List<BookingDto> bookingsDto = bookings.get().map(bookingMapper::convertBookingToBookingDto).collect(Collectors.toList());
 

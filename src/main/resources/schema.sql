@@ -40,17 +40,15 @@ CREATE TABLE IF NOT EXISTS requests
 (
     255
 ) not null,
-    requestor_id BIGINT not null,
+    user_id BIGINT not null,
     created TIMESTAMP NOT NULL,
-    CONSTRAINT fk_requests_requestor_id FOREIGN KEY
+    CONSTRAINT fk_requests_user_id FOREIGN KEY
 (
-    requestor_id
-)
-    REFERENCES users
+    user_id
+) REFERENCES users
 (
     id
-) ON DELETE CASCADE
-    );
+) ON DELETE CASCADE);
 
 CREATE TABLE IF NOT EXISTS items
 (

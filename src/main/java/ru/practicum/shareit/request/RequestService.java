@@ -11,5 +11,5 @@ public interface RequestService {
 
     List<RequestDto> getAllRequests(long userId, int from, int size);
 
-    List<RequestDto> getAllRequestsUser(long userId);
+    List<RequestDto> getAllRequestsFromUser(long userId);
 }

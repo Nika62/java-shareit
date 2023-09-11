@@ -63,7 +63,7 @@ class RequestControllerTest {
 
     @Test
     void getALLRequestsUser() throws Exception {
-        when(requestService.getAllRequestsUser(anyLong()))
+        when(requestService.getAllRequestsFromUser(anyLong()))
                 .thenReturn(List.of(requestDto));
 
         mvc.perform(get("/requests")

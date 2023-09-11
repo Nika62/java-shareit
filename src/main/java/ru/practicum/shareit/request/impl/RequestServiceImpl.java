@@ -54,7 +54,7 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public List<RequestDto> getAllRequestsUser(long userId) {
+    public List<RequestDto> getAllRequestsFromUser(long userId) {
         User user = getUserOrTrow(userId);
         List<RequestDto> requests = requestRepository.findAllRequestsByUserId(userId).stream()
                 .map(requestMapper::convertRequestToRequestDto)

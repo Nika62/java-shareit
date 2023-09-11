@@ -27,8 +27,8 @@ public class RequestController {
     }
 
     @GetMapping
-    public List<RequestDto> getALLRequestsUser(@RequestHeader("X-Sharer-User-Id") long userId) {
-        return requestService.getAllRequestsUser(userId);
+    public List<RequestDto> getALLRequestsFromUser(@RequestHeader("X-Sharer-User-Id") long userId) {
+        return requestService.getAllRequestsFromUser(userId);
     }
 
     @GetMapping("/all")

@@ -248,7 +248,7 @@ class BookingServiceImplTest {
                 () -> {
                     bookingService.getAllBookingsByUserIdAndStatus(2, "YES", 0, 3);
                 });
-        assertEquals("Unknown state: UNSUPPORTED_STATUS", e.getMessage());
+        assertEquals("Unknown state: YES", e.getMessage());
     }
 
     @Test
@@ -300,7 +300,7 @@ class BookingServiceImplTest {
                 () -> {
                     bookingService.getAllBookingsByOwnerAndStatus(1, "YES", 0, 3);
                 });
-        assertEquals("Unknown state: UNSUPPORTED_STATUS", e.getMessage());
+        assertEquals("Unknown state: YES", e.getMessage());
     }
 
 }

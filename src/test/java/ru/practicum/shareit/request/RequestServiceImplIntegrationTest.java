@@ -108,7 +108,7 @@ class RequestServiceImplIntegrationTest {
         RequestDto requestDto = requestService.save(2, new RequestDto("description"));
         Request request = requestMapper.convertRequestDtoToRequest(requestDto);
         Item item = itemRepository.save(itemRepository.save(new Item("item name", "item description", true, owner, request)));
-        List<RequestDto> requests = requestService.getAllRequestsUser(2);
+        List<RequestDto> requests = requestService.getAllRequestsFromUser(2);
         assertEquals(requests.size(), 1);
         assertEquals(requests.get(0).getId(), requestDto.getId());
         assertEquals(requests.get(0).getItems().size(), 1);
@@ -120,7 +120,7 @@ class RequestServiceImplIntegrationTest {
     void shouldReturnNotFoundExceptionGetAllRequestsUser() {
         Exception e = Assertions.assertThrows(NotFoundException.class,
                 () -> {
-                    requestService.getAllRequestsUser(99);
+                    requestService.getAllRequestsFromUser(99);
                 });
 
         assertEquals("Пользователь с id 99 не найден в базе", e.getMessage());
