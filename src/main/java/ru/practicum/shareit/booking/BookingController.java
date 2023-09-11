@@ -15,9 +15,9 @@ import java.util.List;
 public class BookingController {
     private final BookingService bookingService;
 
-    private final String all = "ALL";
-    private final String size = "10";
-    private final String from = "0";
+    private final static String STATE_ALL = "ALL";
+    private final static String DEFAULT_SIZE = "10";
+    private final static String DEFAULT_FROM = "0";
 
     @PostMapping
     public BookingDto createBooking(@RequestHeader("X-Sharer-User-Id") long userId,
@@ -39,9 +39,9 @@ public class BookingController {
 
     @GetMapping
     List<BookingDto> getAllBookingsByUserIdAndStatus(@RequestHeader("X-Sharer-User-Id") long userId,
-                                                     @RequestParam(defaultValue = all) String state,
-                                                     @RequestParam(defaultValue = from) int from,
-                                                     @RequestParam(defaultValue = size) int size) {
+                                                     @RequestParam(defaultValue = STATE_ALL) String state,
+                                                     @RequestParam(defaultValue = DEFAULT_FROM) int from,
+                                                     @RequestParam(defaultValue = DEFAULT_SIZE) int size) {
         if (from < 0 || size <= 0) {
             throw new ValidationException("Параметры запроса from = " + from + " или size = " + size + " введены некорректно");
         }
@@ -50,9 +50,9 @@ public class BookingController {
 
     @GetMapping("/owner")
     List<BookingDto> getAllBookingsByOwner(@RequestHeader("X-Sharer-User-Id") long userId,
-                                           @RequestParam(defaultValue = all) String state,
-                                           @RequestParam(defaultValue = from) int from,
-                                           @RequestParam(defaultValue = size) int size) {
+                                           @RequestParam(defaultValue = STATE_ALL) String state,
+                                           @RequestParam(defaultValue = DEFAULT_FROM) int from,
+                                           @RequestParam(defaultValue = DEFAULT_SIZE) int size) {
         if (from < 0 || size <= 0) {
             throw new ValidationException("Параметры запроса from = " + from + " или size = " + size + " введены некорректно");
         }
