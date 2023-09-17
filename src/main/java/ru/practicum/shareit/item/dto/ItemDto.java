@@ -23,13 +23,37 @@ public class ItemDto {
     @NotBlank(message = "Название не может быть пустым")
     private String name;
     @NotBlank(message = "Описание не может быть пустым")
-    @Size(max = 250,message = "Длина описания не должна превышать 200 символов")
+    @Size(max = 250, message = "Длина описания не должна превышать 200 символов")
     private String description;
     @NotNull(message = "Статус не может быть пустым")
     private Boolean available;
     private UserDto user;
+    private long requestId;
     private List<CommentDto> comments = new ArrayList<>();
     private BookingLastNextDto lastBooking;
     private BookingLastNextDto nextBooking;
 
+    public ItemDto(String name, String description, Boolean available) {
+        this.name = name;
+        this.description = description;
+        this.available = available;
+    }
+
+    public ItemDto(String name, String description, Boolean available, long requestId) {
+        this.name = name;
+        this.description = description;
+        this.available = available;
+        this.requestId = requestId;
+    }
+
+    public ItemDto(long id, String name, String description, Boolean available, UserDto user, long requestId, BookingLastNextDto lastBooking, BookingLastNextDto nextBooking) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.available = available;
+        this.user = user;
+        this.requestId = requestId;
+        this.lastBooking = lastBooking;
+        this.nextBooking = nextBooking;
+    }
 }

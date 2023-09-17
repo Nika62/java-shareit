@@ -1,7 +1,9 @@
 package ru.practicum.shareit.booking;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.booking.model.Booking;
@@ -18,43 +20,42 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
 
     @Query("select b from Booking b where  b.status in ?2 and b.booker.id =?1 and b.start >=?3 ORDER BY b.id DESC")
-    List<Booking> findAllByUserIdAndBookingFuture(long userId, List<String> status, LocalDateTime localDateTime);
+    Page<Booking> findAllByUserIdAndBookingFuture(long userId, List<String> status, LocalDateTime localDateTime, PageRequest pageRequest);
 
 
     @Query("select b from Booking b where  b.status in ?2 and b.booker.id =?1 and b.end <= ?3 ORDER BY b.id DESC")
-    List<Booking> findAllByUserIdAndBookingPast(long userId, List<String> status, LocalDateTime localDateTime);
+    Page<Booking> findAllByUserIdAndBookingPast(long userId, List<String> status, LocalDateTime localDateTime, PageRequest pageRequest);
 
 
     @Query("select b from Booking b where  b.status in ?2 and b.booker.id =?1 and b.start <=?3 AND b.end >= ?3 ORDER BY b.id")
-    List<Booking> findAllByUserIdAndBookingCurrent(long userId, List<String> status, LocalDateTime localDateTime);
+    Page<Booking> findAllByUserIdAndBookingCurrent(long userId, List<String> status, LocalDateTime localDateTime, Pageable pageable);
 
 
     @Query("select b from Booking b where  b.status  =?2 and b.booker.id =?1 ORDER BY b.id DESC")
-    List<Booking> findAllByUserIdAndBookingStatus(long userId, String status);
+    Page<Booking> findAllByUserIdAndBookingStatus(long userId, String status, PageRequest pageRequest);
 
 
-    @Query("select b from Booking b where (b.booker.id =?1 or b.item.user.id =?1) ORDER BY b.id DESC")
-    List<Booking> findAllByBookerIdOrByItemUserId(long userId);
+    Page<Booking> findAllByBookerIdOrderByIdDesc(long userId, PageRequest pageRequest);
 
 
     @Query("select b from Booking b where b.item.user.id =?1 ORDER BY b.id DESC")
-    List<Booking> findAllByOwner(long ownerId);
+    Page<Booking> findAllByOwner(long ownerId, PageRequest pageRequest);
 
 
     @Query("select b from Booking b where  b.status =?2 and b.item.user.id =?1 ORDER BY b.id DESC")
-    List<Booking> findAllByOwnerIdAndBookingStatus(long userId, String status);
+    Page<Booking> findAllByOwnerIdAndBookingStatus(long userId, String status, PageRequest pageRequest);
 
 
     @Query("select b from Booking b where  b.status IN ?2 and b.item.user.id =?1 and b.start >=?3 ORDER BY b.id DESC")
-    List<Booking> findAllByOwnerIdAndBookingFuture(long userId, List<String> status, LocalDateTime localDateTime);
+    Page<Booking> findAllByOwnerIdAndBookingFuture(long userId, List<String> status, LocalDateTime localDateTime, PageRequest pageRequest);
 
 
     @Query("select b from Booking b where  b.status IN ?2 and b.item.user.id =?1 and b.end <=?3 ORDER BY b.id DESC")
-    List<Booking> findAllByOwnerIdAndBookingPast(long userId, List<String> status, LocalDateTime localDateTime);
+    Page<Booking> findAllByOwnerIdAndBookingPast(long userId, List<String> status, LocalDateTime localDateTime, PageRequest pageRequest);
 
 
     @Query("select b from Booking b where  b.status IN ?2 and b.item.user.id =?1 and b.start <=?3 AND b.end >=?3 ORDER BY b.id DESC")
-    List<Booking> findAllByOwnerIdAndBookingCurrent(long userId, List<String> status, LocalDateTime localDateTime);
+    Page<Booking> findAllByOwnerIdAndBookingCurrent(long userId, List<String> status, LocalDateTime localDateTime, PageRequest pageRequest);
 
 
     @Query("select b from Booking b where b.booker.id =?1 and b.item.id =?2 and b.status='APPROVED' and b.end <=?3")

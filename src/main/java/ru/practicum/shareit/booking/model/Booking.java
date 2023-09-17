@@ -1,7 +1,10 @@
 package ru.practicum.shareit.booking.model;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
 
@@ -10,7 +13,10 @@ import java.time.LocalDateTime;
 
 @Table(name = "bookings")
 @Entity
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Booking {
     @EqualsAndHashCode.Exclude
     @Id
@@ -29,4 +35,25 @@ public class Booking {
     @Column
     private String status;
 
+    public Booking(LocalDateTime start, LocalDateTime end, Item item, User booker, String status) {
+        this.start = start;
+        this.end = end;
+        this.item = item;
+        this.booker = booker;
+        this.status = status;
+    }
+
+    public Booking(long id, LocalDateTime start, LocalDateTime end, Item item, User booker) {
+        this.id = id;
+        this.start = start;
+        this.end = end;
+        this.item = item;
+        this.booker = booker;
+    }
+
+    public Booking(LocalDateTime start, LocalDateTime end, String status) {
+        this.start = start;
+        this.end = end;
+        this.status = status;
+    }
 }

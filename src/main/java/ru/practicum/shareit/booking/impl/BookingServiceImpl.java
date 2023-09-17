@@ -2,6 +2,9 @@ package ru.practicum.shareit.booking.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.EnumUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.BookingMapper;
 import ru.practicum.shareit.booking.BookingRepository;
@@ -20,8 +23,6 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.UserRepository;
 import ru.practicum.shareit.user.model.User;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,8 +37,8 @@ public class BookingServiceImpl implements BookingService {
     private final ItemRepository itemRepository;
     private final BookingMapper bookingMapper;
     private final List<FindBookingStrategy> strategies;
-
     private final List<FindBookingByOwnerStrategy> strategiesForOwner;
+
 
     @Override
     public BookingDto createBooking(long userId, BookingDtoCreate bookingDtoCreate) {
@@ -83,31 +84,35 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingDto> getAllBookingsByUserIdAndStatus(long userId, String status) {
+    public List<BookingDto> getAllBookingsByUserIdAndStatus(long userId, String status, int from, int size) {
         if (!EnumUtils.isValidEnum(ResponseState.class, status)) {
-            throw new ValidationException("Unknown state: UNSUPPORTED_STATUS");
+            throw new ValidationException("Unknown state: " + status);
         }
-        List<BookingDto> bookings = new ArrayList<>();
-        bookings = strategies.stream().filter(findBookingStrategy -> findBookingStrategy.shouldBeRun(status))
-                .map(strategy -> strategy.find(userId)).flatMap(Collection::stream)
-                .map(bookingMapper::convertBookingToBookingDto).collect(Collectors.toList());
+        PageRequest pageRequest = PageRequest.of(from / size, size);
 
-        returnTrowIsEmptyList(bookings);
-        return bookings;
+        Page<Booking> bookings = strategies.stream().filter(findBookingStrategy -> findBookingStrategy.shouldBeRun(status))
+                .map(strategy -> strategy.find(userId, pageRequest)).findFirst().orElse(new PageImpl<>(List.of()));
+        List<BookingDto> bookingsDto = bookings.get().map(bookingMapper::convertBookingToBookingDto).collect(Collectors.toList());
+
+        returnTrowIsEmptyList(bookingsDto);
+        return bookingsDto;
     }
 
     @Override
-    public List<BookingDto> getAllBookingsByOwnerAndStatus(long ownerId, String status) {
+    public List<BookingDto> getAllBookingsByOwnerAndStatus(long ownerId, String status, int from, int size) {
         if (!EnumUtils.isValidEnum(ResponseState.class, status)) {
-            throw new ValidationException("Unknown state: UNSUPPORTED_STATUS");
+            throw new ValidationException("Unknown state: " + status);
         }
-        List<BookingDto> bookings = new ArrayList<>();
-        bookings = strategiesForOwner.stream().filter(findBookingByOwnerStrategy -> findBookingByOwnerStrategy.shouldBeRun(status))
-                .map(strategy -> strategy.find(ownerId)).flatMap(Collection::stream)
-                .map(bookingMapper::convertBookingToBookingDto).collect(Collectors.toList());
 
-        returnTrowIsEmptyList(bookings);
-        return bookings;
+        PageRequest pageRequest = PageRequest.of(from / size, size);
+
+        Page<Booking> bookings = strategiesForOwner.stream().filter(findBookingByOwnerStrategy -> findBookingByOwnerStrategy.shouldBeRun(status))
+                .map(strategy -> strategy.find(ownerId, pageRequest)).findFirst().orElse(new PageImpl<>(List.of()));
+
+        List<BookingDto> bookingsDto = bookings.get().map(bookingMapper::convertBookingToBookingDto).collect(Collectors.toList());
+
+        returnTrowIsEmptyList(bookingsDto);
+        return bookingsDto;
     }
 
     private User getUserOrTrow(long userId) {
@@ -149,14 +154,12 @@ public class BookingServiceImpl implements BookingService {
             if (approved.equals(false)) {
                 return setBookingStatusReject(booking);
             }
-        } else if (bookingItemUserId != responseUserId) {
-            if (approved.equals(false)) {
-                return setBookingStatusCanceled(booking);
-            } else {
-                throw new NotFoundException("У пользователя с id = " + responseUserId + " нет прав для подтверждения бронирования");
-            }
+        } else if (responseUserId == booking.getBooker().getId() && approved.equals(false)) {
+            return setBookingStatusCanceled(booking);
+        } else {
+            throw new NotFoundException("У пользователя с id = " + responseUserId + " нет прав для подтверждения бронирования");
         }
-        throw new ValidationException("Произошла ошибка при обновлении статуса бронирования");
+        return null;
     }
 
     private BookingDto setBookingStatusApproved(Booking booking) {

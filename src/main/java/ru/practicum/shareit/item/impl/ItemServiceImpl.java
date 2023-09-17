@@ -14,6 +14,8 @@ import ru.practicum.shareit.item.ItemRepository;
 import ru.practicum.shareit.item.ItemService;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.request.RequestRepository;
+import ru.practicum.shareit.request.model.Request;
 import ru.practicum.shareit.user.UserMapper;
 import ru.practicum.shareit.user.UserRepository;
 import ru.practicum.shareit.user.model.User;
@@ -33,6 +35,7 @@ public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
+    private final RequestRepository requestRepository;
     private final ItemMapper itemMapper;
     private final UserMapper userMapper;
     private final BookingMapper bookingMapper;
@@ -43,8 +46,14 @@ public class ItemServiceImpl implements ItemService {
         User user = getUserByIdOrTrows(userId);
         itemDto.setUser(userMapper.convertUserToUserDto(user));
         try {
-          Item item =  itemRepository.save(itemMapper.convertItemDtoToItem(itemDto));
-          return itemMapper.convertItemToItemDto(item);
+            Item item = itemMapper.convertItemDtoToItem(itemDto);
+            if (itemDto.getRequestId() != 0) {
+                Request request = requestRepository.findById(itemDto.getRequestId()).orElseThrow(
+                        () -> new NotFoundException("Запрос с id = " + itemDto.getRequestId() + " не найден"));
+                item.setRequest(request);
+            }
+            Item returnedItem = itemRepository.save(item);
+            return itemMapper.convertItemToItemDto(returnedItem);
 
         } catch (DataIntegrityViolationException e) {
             throw new ObjectAlreadyExistsException("Вещь уже зарегистрирована в базе");

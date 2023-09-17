@@ -34,22 +34,7 @@ public class BookingMapper {
         return bookingDto;
     }
 
-    public Booking convertBookingDtoToBooking(User user, Item item, BookingDto bookingDto) {
-        if (bookingDto == null) {
-            return null;
-        }
 
-        Booking booking = new Booking();
-
-        booking.setId(bookingDto.getId());
-        booking.setStart(bookingDto.getStart());
-        booking.setEnd(bookingDto.getEnd());
-        booking.setBooker(user);
-        booking.setItem(item);
-        booking.setStatus(bookingDto.getStatus().name());
-
-        return booking;
-    }
 
     public Booking convertBookingDtoCreateToBooking(User user, Item item, BookingDtoCreate bookingDtoCreate) {
 
