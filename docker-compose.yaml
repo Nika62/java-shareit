@@ -1,0 +1,34 @@
+version: '3.2'
+
+services:
+  db:
+    image: postgres:10.23-alpine
+    container_name: postgres_container
+    ports:
+      - "5456:5432"
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: postgres
+  server:
+    build: ./server
+    image: server_images
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+    restart: always
+    links:
+      - db
+  gateway:
+    build: ./gateway
+    image: gateway_image
+    ports:
+      - "8080:8080"
+    environment:
+      SERVER_URI: http://server:9090
+    links:
+      - server
+    depends_on:
+      - server
