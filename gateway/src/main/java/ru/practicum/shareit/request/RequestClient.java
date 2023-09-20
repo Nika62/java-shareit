@@ -36,10 +36,8 @@ public class RequestClient extends BaseClient {
     }
 
     public ResponseEntity<Object> getRequestById(long userId, long requestId) {
-        Map<String, Object> parameters = Map.of(
-                "requestId", requestId
-        );
-        return get("/{requestId}", userId, parameters);
+
+        return get("/" + requestId, userId);
     }
 
 

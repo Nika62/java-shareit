@@ -35,14 +35,15 @@ public class UserClient extends BaseClient {
     }
 
     public ResponseEntity<Object> updateUser(long userId, UserDto userDto) {
-        Map<String, Object> parameters = Map.of(
-                "userId", userId
-        );
-        return patch("/{userId}", userId, userDto);
+
+        userDto.setId(userId);
+
+        return patch("/", userDto);
     }
 
     public ResponseEntity<Object> getUserById(long userId) {
-        return get("/{userId}", userId);
+
+        return get("/" + userId);
     }
 
     public ResponseEntity<Object> getAllUsers() {
@@ -50,6 +51,6 @@ public class UserClient extends BaseClient {
     }
 
     public ResponseEntity<Object> deleteUserById(@PathVariable long userId) {
-        return delete("/userId", userId);
+        return delete("/" + userId);
     }
 }

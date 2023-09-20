@@ -29,9 +29,13 @@ public class BookingController {
 											  @RequestParam(name = "state", defaultValue = "all") String stateParam,
 											  @PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
 											  @Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
+		BookingState state;
+		try {
+			state = BookingState.from(stateParam)
+					.orElseThrow(() -> new IllegalArgumentException("Unknown state: " + stateParam));
+		} catch (IllegalArgumentException e) {
+		}
 
-		BookingState state = BookingState.from(stateParam)
-				.orElseThrow(() -> new IllegalArgumentException("Unknown state: " + stateParam));
 		if (from < 0 || size <= 0) {
 			throw new ValidationException("Параметры запроса from = " + from + " или size = " + size + " введены некорректно");
 		}

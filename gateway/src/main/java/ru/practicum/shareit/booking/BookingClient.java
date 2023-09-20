@@ -55,10 +55,9 @@ public class BookingClient extends BaseClient {
 
     public ResponseEntity<Object> updateBooking(long bookingId, boolean approved, long userId) {
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("bookingId", bookingId);
         parameters.put("approved", approved);
 
-        return patch("/", userId, parameters);
+        return patch("/" + bookingId + "?approved=" + approved, userId);
     }
 
     public ResponseEntity<Object> getBooking(long userId, Long bookingId) {

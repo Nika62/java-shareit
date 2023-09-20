@@ -1,7 +1,6 @@
 package ru.practicum.shareit.booking.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.EnumUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.BookingMapper;
 import ru.practicum.shareit.booking.BookingRepository;
 import ru.practicum.shareit.booking.BookingService;
-import ru.practicum.shareit.booking.ResponseState;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingDtoCreate;
 import ru.practicum.shareit.booking.finding.FindBookingByOwnerStrategy;
@@ -85,9 +83,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<BookingDto> getAllBookingsByUserIdAndStatus(long userId, String status, int from, int size) {
-        if (!EnumUtils.isValidEnum(ResponseState.class, status)) {
-            throw new ValidationException("Unknown state: " + status);
-        }
+
         PageRequest pageRequest = PageRequest.of(from / size, size);
 
         Page<Booking> bookings = strategies.stream().filter(findBookingStrategy -> findBookingStrategy.shouldBeRun(status))
@@ -100,9 +96,6 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<BookingDto> getAllBookingsByOwnerAndStatus(long ownerId, String status, int from, int size) {
-        if (!EnumUtils.isValidEnum(ResponseState.class, status)) {
-            throw new ValidationException("Unknown state: " + status);
-        }
 
         PageRequest pageRequest = PageRequest.of(from / size, size);
 
