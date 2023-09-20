@@ -3,6 +3,7 @@ package ru.practicum.shareit.booking;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.EnumUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -29,11 +30,9 @@ public class BookingController {
 											  @RequestParam(name = "state", defaultValue = "all") String stateParam,
 											  @PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
 											  @Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
-		BookingState state;
-		try {
-			state = BookingState.from(stateParam)
-					.orElseThrow(() -> new IllegalArgumentException("Unknown state: " + stateParam));
-		} catch (IllegalArgumentException e) {
+
+		if(!EnumUtils.isValidEnum(BookingState.class, stateParam)) {
+			throw new ValidationException("Unknown state: " + stateParam);
 		}
 
 		if (from < 0 || size <= 0) {
@@ -41,7 +40,7 @@ public class BookingController {
 		}
 
 		log.info("Get booking with state {}, userId={}, from={}, size={}", stateParam, userId, from, size);
-		return bookingClient.getBookings(userId, state, from, size);
+		return bookingClient.getBookings(userId, BookingState.valueOf(stateParam), from, size);
 	}
 
 	@GetMapping("/owner")
