@@ -7,9 +7,6 @@ import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.BookingMapper;
 import ru.practicum.shareit.booking.BookingRepository;
 import ru.practicum.shareit.booking.model.Booking;
-import ru.practicum.shareit.comment.CommentMapper;
-import ru.practicum.shareit.comment.CommentRepository;
-import ru.practicum.shareit.comment.model.Comment;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.ObjectAlreadyExistsException;
 import ru.practicum.shareit.item.ItemMapper;
@@ -39,11 +36,8 @@ public class ItemServiceImpl implements ItemService {
     private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
     private final RequestRepository requestRepository;
-
-    private final CommentRepository commentRepository;
     private final ItemMapper itemMapper;
     private final UserMapper userMapper;
-    private final CommentMapper commentMapper;
     private final BookingMapper bookingMapper;
 
 
@@ -87,7 +81,6 @@ public class ItemServiceImpl implements ItemService {
         if (item.getUser().getId() == userId) {
             recordLastNextBookingOnItem(itemDto, itemId,userId);
         }
-        setCommentsInItem(itemId, itemDto);
         return itemDto;
 
     }
@@ -98,12 +91,7 @@ public class ItemServiceImpl implements ItemService {
             return new ArrayList<>();
         }
         text = "%" + text.toLowerCase() + "%";
-        List<ItemDto> items = itemRepository.findAllByNameOrDescriptionAndAvailable(text).stream().map(itemMapper::convertItemToItemDto).collect(Collectors.toList());
-        for (int i = 0; i < items.size(); i++) {
-            ItemDto itemDto = items.get(i);
-            setCommentsInItem(itemDto.getId(), itemDto);
-        }
-        return items;
+        return itemRepository.findAllByNameOrDescriptionAndAvailable(text).stream().map(itemMapper::convertItemToItemDto).collect(Collectors.toList());
     }
 
     @Override
@@ -115,7 +103,6 @@ public class ItemServiceImpl implements ItemService {
         for (int i = 0; i < items.size(); i++) {
             ItemDto itemDto = items.get(i);
             recordLastNextBookingOnItem(itemDto, itemDto.getId(), userId);
-            setCommentsInItem(itemDto.getId(), itemDto);
         }
         return items;
     }
@@ -144,20 +131,18 @@ public class ItemServiceImpl implements ItemService {
         List<Booking> pastBookings =  bookingRepository.getLastBooking(itemId, today);
         List<Booking> futureBookings =  bookingRepository.getNextBooking(itemId, userId, dateTime);
         Booking lastBooking = null;
+        Booking nextBooking = null;
 
         if (!pastBookings.isEmpty()) {
             lastBooking = pastBookings.size() > 1 ? pastBookings.get(1) : pastBookings.get(0);
         }
-        Booking nextBooking = futureBookings.isEmpty() ? null : futureBookings.get(0);
+
+        if (!futureBookings.isEmpty()) {
+            nextBooking = futureBookings.size() > 1 ? futureBookings.get(1) : futureBookings.get(0);
+        }
 
         itemDto.setLastBooking(bookingMapper.convertBookingToBookingLastNextDto(lastBooking));
         itemDto.setNextBooking(bookingMapper.convertBookingToBookingLastNextDto(nextBooking));
     }
 
-    private void setCommentsInItem(long itemId, ItemDto itemDto) {
-        List<Comment> comments = commentRepository.getAllByItemId(itemId);
-        if (!comments.isEmpty()) {
-            itemDto.setComments(comments.stream().map(commentMapper::convertCommentToCommentDto).collect(Collectors.toList()));
-        }
-    }
 }
