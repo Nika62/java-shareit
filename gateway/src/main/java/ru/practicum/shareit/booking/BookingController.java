@@ -31,16 +31,15 @@ public class BookingController {
 											  @PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
 											  @Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
 
-		if(!EnumUtils.isValidEnum(BookingState.class, stateParam)) {
-			throw new ValidationException("Unknown state: " + stateParam);
-		}
+		BookingState state = BookingState.from(stateParam)
+				.orElseThrow(() -> new IllegalArgumentException("Unknown state: " + stateParam));
 
 		if (from < 0 || size <= 0) {
 			throw new ValidationException("Параметры запроса from = " + from + " или size = " + size + " введены некорректно");
 		}
 
 		log.info("Get booking with state {}, userId={}, from={}, size={}", stateParam, userId, from, size);
-		return bookingClient.getBookings(userId, BookingState.valueOf(stateParam), from, size);
+		return bookingClient.getBookings(userId, state, from, size);
 	}
 
 	@GetMapping("/owner")
