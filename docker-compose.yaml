@@ -13,8 +13,6 @@ services:
   server:
     build: ./server
     image: server_images
-    ports:
-      - "9090:9090"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres
       SPRING_DATASOURCE_USERNAME: postgres
