@@ -29,6 +29,6 @@ services:
     ports:
       - "8080:8080"
     environment:
-      shareit-server.url: http://server:9090
+      SHAREIT_SERVER_URL: http://server:9090
     depends_on:
       - server
