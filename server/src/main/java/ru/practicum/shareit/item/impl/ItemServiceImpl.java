@@ -9,7 +9,6 @@ import ru.practicum.shareit.booking.BookingRepository;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.comment.CommentMapper;
 import ru.practicum.shareit.comment.CommentRepository;
-import ru.practicum.shareit.comment.model.Comment;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.ObjectAlreadyExistsException;
 import ru.practicum.shareit.item.ItemMapper;
