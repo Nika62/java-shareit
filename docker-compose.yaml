@@ -13,6 +13,8 @@ services:
   server:
     build: ./server
     image: server_images
+    ports:
+      - "9090:9090"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres
       SPRING_DATASOURCE_USERNAME: postgres
@@ -27,6 +29,6 @@ services:
     ports:
       - "8080:8080"
     environment:
-      shareit-server.url: http://server
+      shareit-server.url: http://server:9090
     depends_on:
       - server
