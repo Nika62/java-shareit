@@ -28,7 +28,5 @@ services:
       - "8080:8080"
     environment:
       SERVER_URI: http://server:9090
-    links:
-      - server
     depends_on:
       - server
