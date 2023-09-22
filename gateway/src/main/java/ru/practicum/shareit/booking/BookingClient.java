@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.DefaultUriBuilderFactory;
+import org.springframework.web.util.UriComponentsBuilder;
 import ru.practicum.shareit.booking.dto.BookingDtoCreate;
 import ru.practicum.shareit.booking.dto.BookingState;
 import ru.practicum.shareit.client.BaseClient;
@@ -56,11 +57,12 @@ public class BookingClient extends BaseClient {
     public ResponseEntity<Object> updateBooking(long bookingId, boolean approved, long userId) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("approved", approved);
-
-        return patch("/" + bookingId + "?approved=" + approved, userId);
+        String path = UriComponentsBuilder.newInstance().path("/{bookingId}?approved={approved}").buildAndExpand(bookingId, approved).toString();
+        return patch(path, userId);
     }
 
     public ResponseEntity<Object> getBooking(long userId, Long bookingId) {
+        String path = UriComponentsBuilder.newInstance().path("/{bookingId}").buildAndExpand(bookingId).toString();
         return get("/" + bookingId, userId);
     }
 }

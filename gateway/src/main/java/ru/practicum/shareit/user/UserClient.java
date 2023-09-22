@@ -8,6 +8,7 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.util.DefaultUriBuilderFactory;
+import org.springframework.web.util.UriComponentsBuilder;
 import ru.practicum.shareit.client.BaseClient;
 import ru.practicum.shareit.user.dto.UserDto;
 
@@ -38,8 +39,8 @@ public class UserClient extends BaseClient {
     }
 
     public ResponseEntity<Object> getUserById(long userId) {
-
-        return get("/" + userId);
+        String path = UriComponentsBuilder.newInstance().path("/{userId}").buildAndExpand(userId).toString();
+        return get(path);
     }
 
     public ResponseEntity<Object> getAllUsers() {
@@ -47,6 +48,7 @@ public class UserClient extends BaseClient {
     }
 
     public ResponseEntity<Object> deleteUserById(@PathVariable long userId) {
-        return delete("/" + userId);
+        String path = UriComponentsBuilder.newInstance().path("/{userId}").buildAndExpand(userId).toString();
+        return delete(path);
     }
 }

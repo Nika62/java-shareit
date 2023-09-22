@@ -8,6 +8,7 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.util.DefaultUriBuilderFactory;
+import org.springframework.web.util.UriComponentsBuilder;
 import ru.practicum.shareit.client.BaseClient;
 import ru.practicum.shareit.comment.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
@@ -35,7 +36,8 @@ public class ItemClient extends BaseClient {
     }
 
     public ResponseEntity<Object> getItemById(long itemId, long userId) {
-        return get("/" + itemId, userId);
+        String path = UriComponentsBuilder.newInstance().path("/{itemId}").buildAndExpand(itemId).toString();
+        return get(path, userId);
     }
 
     public ResponseEntity<Object> getSearchItem(long userId, String text) {
@@ -52,17 +54,19 @@ public class ItemClient extends BaseClient {
 
 
     public ResponseEntity<Object> updateItem(long userId, long itemId, @RequestBody ItemDto item) {
-        return patch("/" + itemId, userId, item);
+        String path = UriComponentsBuilder.newInstance().path("/{itemId}").buildAndExpand(itemId).toString();
+        return patch(path, userId, item);
     }
 
     public ResponseEntity<Object> deleteItemById(long userId, long itemId) {
-
-        return delete("/" + itemId, userId);
+        String path = UriComponentsBuilder.newInstance().path("/{itemId}").buildAndExpand(itemId).toString();
+        return delete(path, userId);
     }
 
     public ResponseEntity<Object> createComment(long userId, long itemId, CommentDto commentDto) {
+        String path = UriComponentsBuilder.newInstance().path("/{itemId}/comment").buildAndExpand(itemId).toString();
 
-        return post("/" + itemId + "/comment", userId, commentDto);
+        return post(path, userId, commentDto);
     }
 
 }

@@ -45,16 +45,19 @@ public class ItemController {
 
     @GetMapping("/{itemId}")
     public ResponseEntity<Object> getIemById(@PathVariable long itemId, @RequestHeader("X-Sharer-User-Id") long userId) {
+        log.info("Get item by itemId={}, userId={}", itemId, userId);
         return itemClient.getItemById(itemId, userId);
     }
 
     @GetMapping("/search")
     public ResponseEntity<Object> getSearchItem(@RequestHeader("X-Sharer-User-Id") long userId, @RequestParam String text) {
+        log.info("Get all items by key={}", text);
         return itemClient.getSearchItem(userId, text);
     }
 
     @GetMapping
     public ResponseEntity<Object> getAllItemsUser(@RequestHeader("X-Sharer-User-Id") long userId) {
+        log.info("Get all items by user userId={}", userId);
         return itemClient.getAllItemsUser(userId);
     }
 
